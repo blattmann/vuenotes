@@ -1,0 +1,17 @@
+.sb-navi {
+  // &__tile {
+  //   &--item {
+  //   }
+  // }
+
+  &__link {
+    color: #fff;
+    font-weight: 600;
+    font-size: sp(20);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

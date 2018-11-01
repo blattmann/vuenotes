@@ -1,0 +1,94 @@
+//
+// ----------------------
+// Responsive Breakpoints (vuetifyl viewport breakpoint: https://vuetifyjs.com/en/layout/breakpoints#breakpoint-object)
+// ----------------------
+// $bp-small: 37.5em;    // 600px  --> small to large handset
+// $bp-medium: 60em;     // 960px  --> small to medium tablet
+// $bp-large: 79em;      // 1264px --> large tablet to laptop
+// $bp-xlarge: 119em;  // 1904px --> LARGE DESKTOP
+
+$bp-small: 48em;      //  768px --> TABLET
+$bp-medium: 64em;     // 1024px --> SMALL DESKTOP
+$bp-large: 90em;      // 1440px --> DESKTOP
+$bp-xlarge: 112.5em;  // 1800px --> LARGE DESKTOP
+$bp-xxlarge: 160em;   // 2560px --> EXTRA LARGE DESKTOP
+
+//
+// ----------------------
+// Mediaqueries
+// ----------------------
+$mq-extrasmall: "screen and (max-width: #{$bp-small})";                                 // small to large handset
+$mq-small: "screen and (min-width: #{$bp-small}) and (max-width: #{$bp-medium})";       // small to medium tablet
+$mq-medium: "screen and (min-width: #{$bp-medium}) and (max-width: #{$bp-large})";      // large tablet to laptop
+$mq-large: "screen and (min-width: #{$bp-large}) and (max-width: #{$bp-xlarge})";       // desktop
+$mq-xlarge: "screen and (min-width: #{$bp-xlarge})";                                    // 4k and ultra-wides
+$mq-retina: "screen and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+$mq-uhd: "screen and (min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)";
+
+@mixin vp-xs { // < TABLET
+  @media #{$mq-extrasmall} {
+    @content;
+  }
+}
+
+@mixin vp-sm { // TABLET
+  @media #{$mq-small} {
+    @content;
+  }
+}
+
+@mixin vp-md { // SMALL DESKTOP
+  @media #{$mq-medium} {
+    @content;
+  }
+}
+
+@mixin vp-lg { // DESKTOP
+  @media #{$mq-large} {
+    @content;
+  }
+}
+
+@mixin vp-xl { // LARGE DESKTOP
+  @media #{$mq-xlarge} {
+    @content;
+  }
+}
+
+@mixin vp-xxl { // EXTRA LARGE DESKTOP
+  @media #{$mq-xxlarge} {
+    @content;
+  }
+}
+
+@mixin retina { // RETINA
+  @media #{$mq-retina} {
+    @content;
+  }
+}
+
+@mixin uhd { // 4k SCREENS
+  @media #{$mq-uhd} {
+    @content;
+  }
+}
+
+@mixin print { // PRINT
+  @media print {
+    @content;
+  }
+}
+
+//  Example usage:
+//  --------------
+//  p {
+//    font-size: 16px;
+//
+//    @include vp-sm {
+//      font-size: 18px;
+//    }
+//
+//    @include vp-md {
+//      font-size: 20px;
+//    }
+//  }

@@ -1,0 +1,32 @@
+//
+// Colors
+// Find a color name:
+// http://chir.ag/projects/name-that-color/#6195ED
+// --------------------------------------------------
+
+// Main Colors
+$color-black-solid: #000000;
+$color-white-paper-white: #ffffff;
+
+// Background colors
+$color-background-default: rgb(63, 103, 166);
+$color-background-content: #B0C0D9;//rgb(245, 245, 245);
+$color-background-links--middle: #dddddd;
+$color-background-elements: #dbe8ff;
+$color-background-circle: #3F67A6;
+$color-background-tag: #3F67A6;
+$color-background-tag--hover: darken($color-background-tag, 5%);
+
+// Border colors
+$color-border-timeline: #dbdbdb;
+$color-border-circle: #dbdbdb;
+
+// Shadow colors
+$color-column-shadow: rgba(163, 163, 163, 1);
+
+// Font Colors
+$color-font-default: #3F67A6;;
+$color-font-elements: #235ebc;
+
+// Icon colors
+$color-icon-content: #3F67A6;
