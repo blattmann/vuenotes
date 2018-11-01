@@ -8,7 +8,17 @@ import StaticData from '@/data/i18n.json'
 const projectUrl = 'https://stefan-blattmann.firebaseapp.com/'
 
 /* eslint-disable */
-console.log('projectUrl: ', projectUrl)
+// console.log('projectUrl: ', projectUrl)
+
+const firebaseApp = Firebase.initializeApp({
+  // Populate your firebase configuration data here.
+  apiKey: 'AIzaSyDEHMQ5iQobQmyeCIAE2N5b4OR3FBEIDdg',
+  authDomain: 'stefan-blattmann.firebaseapp.com',
+  databaseURL: 'https://stefan-blattmann.firebaseio.com',
+  projectId: 'stefan-blattmann',
+  storageBucket: 'stefan-blattmann.appspot.com',
+  messagingSenderId: '878059176831'
+})
 
 export default {
   // Ref: https://firebase.google.com/docs/database/web/read-and-write

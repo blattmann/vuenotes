@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
+import sbVuePlugins from '@blattmann/vue-plugins'
 // import "./registerServiceWorker";
-
-// Import static data (translations, etc)
-import StaticData from '@/data/data.json'
 
 // API call
 import api from '@/api'
@@ -18,33 +16,18 @@ import Settings from '@/config/settings'
 import Regex from '@/config/regex'
 
 // Import global plugims
-import UrlPlugin from '@/plugins/url'
 import Translation from '@/plugins/translation'
-import PageTitle from '@/plugins/pagetitle'
-import ImagePath from '@/plugins/imagepath'
-import ImageResize from '@/plugins/imageresize'
-import Background from '@/plugins/background'
-import TitleCase from '@/plugins/titlecase'
-import UpperCase from '@/plugins/uppercase'
-import LocationRedirect from '@/plugins/redirect'
 
 // Import main component
 import App from '@/App'
 
 // Import Router
-import router from '@/router'
+import router from '@/router/router'
 
 // Init
+Vue.use(sbVuePlugins)
 Vue.use(GlobalConfig)
-Vue.use(UrlPlugin)
 Vue.use(Translation)
-Vue.use(PageTitle)
-Vue.use(ImagePath)
-Vue.use(ImageResize)
-Vue.use(Background)
-Vue.use(TitleCase)
-Vue.use(UpperCase)
-Vue.use(LocationRedirect)
 
 window.Promise = Promise
 
@@ -58,7 +41,6 @@ if (document.getElementById('app')) {
     router,
     data() {
       return {
-        StaticData,
         Translation,
         Settings,
         Regex,

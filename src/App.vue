@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <sw-navigation />
+  <v-app dark>
+    <sb-navigation />
 
-    <v-content class="sw-content">
+    <v-content class="sb-content">
       <router-view/>
     </v-content>
 
@@ -18,7 +18,7 @@ import api from '@/api'
 export default {
   name: 'AppContainer',
   components: {
-    'sw-navigation': Navigation
+    'sb-navigation': Navigation
   },
   data() {
     return {}
