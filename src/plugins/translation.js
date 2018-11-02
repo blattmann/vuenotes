@@ -2,7 +2,7 @@
 import StaticData from '@/data/i18n.json'
 
 const translation = {
-  install (Vue, options) {
+  install(Vue) {
     const setVue = Vue
     setVue.prototype.$getTrans = (string, lg, nested) => {
       let trans = ''

@@ -3,7 +3,7 @@ import { validationMixin } from 'vuelidate'
 export default {
   mixins: [validationMixin],
   methods: {
-    focusFirstStatus (component = this) {
+    focusFirstStatus(component = this) {
       if (component.status) {
         component.$el.focus()
         return true
@@ -11,7 +11,7 @@ export default {
 
       let focused = false
 
-      component.$children.some((childComponent) => {
+      component.$children.some(childComponent => {
         focused = this.focusFirstStatus(childComponent)
         return focused
       })
@@ -19,7 +19,7 @@ export default {
       return focused
     },
     // validate all data
-    validate () {
+    validate() {
       this.$v.$touch()
       this.$nextTick(() => this.focusFirstStatus())
     }

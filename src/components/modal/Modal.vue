@@ -1,70 +1,258 @@
 <template>
-<v-dialog v-model="action.visible" :persistent="_persistent">
-  <v-card class="sw-modal__card">
-    <v-card-title class="headline sw-modal__card--title">{{ i18n.modal.title }}</v-card-title>
+  <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+    <v-card :color="modalBackground">
 
-    <v-card-text class="sw-modal__card--text">
-      {{ i18n.modal.text }}
-    </v-card-text>
+      <v-toolbar dark color="primary">
+        <v-btn icon dark @click.native="dialog = false">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ i18n.form.header }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn v-if="showReset" dark flat @click.native="reset()">{{ i18n.button.reset }}</v-btn>
+          <v-btn dark flat @click.native="dialog = false; saveData()">{{ i18n.button.save }}</v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
 
-    <v-card-text class="sw-modal__card--citation">
-      {{ i18n.modal.citation }}
-    </v-card-text>
+      <v-container>
+        <v-layout row wrap>
+          <v-flex xs12>
+            <h1 class="title">{{ translation.subheader }}</h1>
 
-    <v-card-actions class="sw-modal__card--actions">
-      <v-spacer></v-spacer>
+            <v-form ref="modalform" v-model="valid" lazy-validation v-cloak>
+              <v-flex>
+                <v-text-field :label="i18n.form.title.label" :value="form.title" v-model="form.title" :rules="[rules.required, rules.title.check]" @change="allowCancel()"></v-text-field>
+              </v-flex>
 
-      <v-btn class="sw-newcampaigns__footer--back" flat="flat" @click.stop="visible = false; action = { visible: false, action: 'cancel'};">
-        {{ translatePlaceholder('button', 'cancel', 'en') }}
-      </v-btn>
+              <v-flex>
+                <v-textarea :label="i18n.form.note.label" :value="form.content" v-model="form.content" :rules="[rules.required, rules.content.check]" @change="allowCancel()"></v-textarea>
+              </v-flex>
 
-      <v-btn class="sw-newcampaigns__footer--next" @click.stop="visible = false; action = { visible: false, action: 'sent'};">
-        {{ i18n.modal.send }}
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
+              <v-flex mt-2>
+                <p>{{ i18n.form.subheader.background }}</p>
+              </v-flex>
+
+              <v-flex>
+                <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab :color="item" @click="setBackground(item)"></v-btn>
+              </v-flex>
+            </v-form>
+          </v-flex>
+
+        </v-layout>
+      </v-container>
+
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
-import cleanerMixin from '@/mixins/cleanerMixin'
+import api from '@/api'
 import EventBus from '@/eventbus'
+import cleanerMixin from '@/mixins/cleanerMixin'
 
 export default {
   name: 'ModalComponent',
   mixins: [cleanerMixin],
-  props: ['dialog', 'context', 'persistent'],
-  data () {
+  data() {
     return {
+      valid: false,
+      dialog: false,
+      showReset: false,
+      modalType: 'add',
       i18n: null,
-      action: {
-        visible: false,
-        action: null
+      translation: {
+        subheader: null
       },
-      _persistent: false
+      form: {},
+      modalBackground: null,
+      background: [],
+      rules: {
+        required: value => !!value || 'required',
+        title: {
+          check: value => {
+            return this.passValidation('title', value)
+          }
+        },
+        content: {
+          check: value => {
+            return this.passValidation('content', value)
+          }
+        }
+      },
+      errorMessages: {}
     }
   },
-  watch: {
-    action: (obj) => {
-      const vm = this
-      EventBus.$emit('dialogChange', {
-        visible: obj.visible,
-        action: obj.action
-      })
-    }
-  },
-  created () {
+  created() {
     const vm = this
+    vm.i18n = vm.$root.$data.Translation
+    vm.background = vm.$root.$data.Settings.background
+  },
+  mounted() {
+    const vm = this
+    const eb = EventBus
 
-    vm.action.visible = vm.dialog
-    vm._persistent = vm.persistent ? vm.persistent : false
-    vm.i18n = vm.$root.$data.Translation[vm.context]
+    eb.$on('addNote', emitResults => {
+      // console.log('addNote: ', emitResults)
+      if (emitResults) {
+        vm.form = {}
+        vm.modalBackground = null
+        vm.dialog = true
+        vm.translation.subheader = vm.i18n.form.subheader.add
+        console.log('addNote: ', emitResults)
+      }
+    })
+
+    eb.$on('editNote', emitResults => {
+      if (emitResults) {
+        vm.form = {}
+        vm.modalBackground = null
+        vm.dialog = true
+        vm.modalType = 'edit'
+        vm.translation.subheader = vm.i18n.form.subheader.edit
+        // console.log('editNote: ', emitResults)
+        vm.getNote(emitResults)
+      }
+    })
+
+    eb.$on('deleteNote', emitResults => {
+      // console.log('deleteNote: ', emitResults)
+      if (emitResults) {
+        vm.dialog = true
+        console.log('deleteNote: ', emitResults)
+        // vm.logout()
+      }
+    })
   },
-  updated () {
-    const vm = this
-    vm.action = {
-      visible: false,
-      action: 'cancel'
+  beforeDestroy() {
+    const eb = EventBus
+    eb.$off('addNote')
+    eb.$off('editNote')
+    eb.$off('deleteNote')
+  },
+  methods: {
+    getNote(id) {
+      const vm = this
+      let data = null
+      if (id) {
+        api.getNote(id).then(data => {
+          data = data.val()
+
+          vm.form.id = id
+          vm.form.title = data.title
+          vm.form.content = data.content
+          vm.form.background = data.background
+          vm.modalBackground = data.background
+        })
+      }
+    },
+    passValidation(item, value) {
+      const vm = this
+      const i18ne = vm.$root.$data.Translation.validation
+      const patternName = vm.$root.$data.Regex.name
+      // console.log('passValidation: ', item, value)
+
+      let ret = ''
+      if (value) {
+        switch (item) {
+          case 'title':
+            if (patternName.test(value) && value.length >= 5) {
+              ret = true
+            } else {
+              if (!patternName.test(value)) {
+                ret = i18ne.charsNotAllowed
+              } else if (value.length <= 5) {
+                ret = i18ne.minCharsTitle
+              } else {
+                ret = i18ne.correctTitle
+              }
+            }
+            break
+          case 'content':
+            if (patternName.test(value) && value.length >= 15) {
+              ret = true
+            } else {
+              if (!patternName.test(value)) {
+                ret = i18ne.charsNotAllowed
+              } else if (value.length <= 15) {
+                ret = i18ne.minCharsContent
+              } else {
+                ret = i18ne.correctName
+              }
+            }
+            break
+          default:
+            ret = true
+        }
+      } else {
+        ret = false
+      }
+
+      // console.log('ret: ', ret)
+      return ret
+    },
+    saveData() {
+      const vm = this
+      const form = vm.form
+
+      if (vm.$refs.modalform.validate()) {
+        console.log('saveData valid')
+        if (vm.modalType === 'edit') {
+          // call api to save
+          const id = form.id
+          delete form.id
+
+          api
+            .editNote(id, form)
+            .then(response => {
+              console.log(response)
+              // show toast
+              // vm.$showToast(vm, vm.i18n.toastUserSaved, 'success')
+            })
+            .catch(error => {
+              console.error(error)
+              // show toast
+              // vm.$showToast(vm, vm.i18n.toastUserError + ' ' + vm.processError(error), 'error')
+            })
+        } else {
+          // call api to save
+          if (!vm.modalBackground) {
+            form.background = 'blue'
+          } else {
+            form.background = vm.modalBackground
+          }
+
+          api
+            .addNote(form)
+            .then(response => {
+              console.log(response)
+              // show toast
+              // vm.$showToast(vm, vm.i18n.toastUserSaved, 'success')
+            })
+            .catch(error => {
+              console.error(error)
+              // show toast
+              // vm.$showToast(vm, vm.i18n.toastUserError + ' ' + vm.processError(error), 'error')
+            })
+        }
+      }
+    },
+    allowCancel() {
+      this.showReset = true
+    },
+    reset() {
+      const vm = this
+      console.log('reset form editing')
+      vm.showReset = false
+      vm.valid = false
+
+      if (vm.form.id) {
+        vm.getNote(vm.form.id)
+      } else {
+        vm.$refs.modalform.reset()
+      }
+    },
+    setBackground(color) {
+      this.modalBackground = color
     }
   }
 }

@@ -1,16 +1,11 @@
-import axios from 'axios'
 import Firebase from 'firebase'
-// import firebase from 'firebase/app'
 
 // Import static data (translations, etc)
 import StaticData from '@/data/i18n.json'
 
-const projectUrl = 'https://stefan-blattmann.firebaseapp.com/'
-
 /* eslint-disable */
-// console.log('projectUrl: ', projectUrl)
 
-const firebaseApp = Firebase.initializeApp({
+Firebase.initializeApp({
   // Populate your firebase configuration data here.
   apiKey: 'AIzaSyDEHMQ5iQobQmyeCIAE2N5b4OR3FBEIDdg',
   authDomain: 'stefan-blattmann.firebaseapp.com',
@@ -37,12 +32,17 @@ export default {
     return res
   },
 
-  addNote(payload) {},
+  addNote(payload) {
+    const db = Firebase.database()
+    const path = `opensource/notebook`
+    const res = db.ref(path).push(payload)
+    return res
+  },
 
   editNote(id, payload) {
     const db = Firebase.database()
     const path = `opensource/notebook/${id}`
-    const res = db.ref(path).set('payload')
+    const res = db.ref(path).set(payload)
     return res
   },
 

@@ -27,6 +27,7 @@ export default {
       route: '/notes'
     }
   ],
+  background: ['blue', 'green', 'orange', 'purple', 'pink'],
   modal: {
     width: '500px'
   },

@@ -1,7 +1,8 @@
 <script>
+/* eslint-disable */
 export default {
   methods: {
-    cleanContent (string) {
+    cleanContent(string) {
       let str = string
       // setup
       const downloadUrlDevelop = 'https://bw-football-contentful-dev.appspot.com/contentful/download'
@@ -9,7 +10,8 @@ export default {
       const host = window.location.host.split('.')[0]
 
       let downloadUrl = ''
-      downloadUrl = (host.indexOf('localhost') >= 0 || host.indexOf('develop') >= 0) ? downloadUrlDevelop : downloadUrlProduction
+      downloadUrl =
+        host.indexOf('localhost') >= 0 || host.indexOf('develop') >= 0 ? downloadUrlDevelop : downloadUrlProduction
 
       // regex patterns
       // const regCleanSpaces = /&nbsp;/gi
@@ -37,13 +39,13 @@ export default {
 
       return str
     },
-    clearAttr (string, attrs) {
+    clearAttr(string, attrs) {
       let str = string
       const reg = /<\s*(\w+).*?>/gm
       const reg2 = /\s*(\w+)=\"[^\"]+\"/gm
 
-      str = str.replace(reg, (match, i) => {
-        const r = match.replace(reg2, (match1, i1) => {
+      str = str.replace(reg, match => {
+        const r = match.replace(reg2, match1 => {
           const m = reg2.exec(match1)
 
           if (m !== null) {
@@ -57,7 +59,7 @@ export default {
       })
       return str
     },
-    cleanArray (actual) {
+    cleanArray(actual) {
       const newArray = []
       let i
       for (i = 0; i < actual.length; i += 1) {
@@ -67,7 +69,7 @@ export default {
       }
       return newArray
     },
-    translatePlaceholder (key, value, lang) {
+    translatePlaceholder(key, value, lang) {
       // console.log('translatePlaceholder: ', key, value, lang)
       let ret = ''
 

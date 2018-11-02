@@ -1,13 +1,12 @@
 export default {
-
-  decodeHtmlEntity (str) {
+  decodeHtmlEntity(str) {
     const matcher = (match, dec) => String.fromCharCode(dec)
     const res = str.replace(/&#(\d+);/g, matcher)
 
     return res
   },
 
-  encodeHtmlEntity (str) {
+  encodeHtmlEntity(str) {
     const buf = []
     for (let i = str.length - 1; i >= 0; i -= 1) {
       buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''))

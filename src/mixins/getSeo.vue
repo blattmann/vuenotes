@@ -3,14 +3,15 @@ import api from '@/api'
 
 export default {
   methods: {
-    getSeoData (page, curPage) {
+    getSeoData(page, curPage) {
       // console.log('getSeoData mixin')
       // console.log('page: ', page)
       // console.log('curPage: ', curPage)
 
       let seo = {}
 
-      api.getSeo()
+      api
+        .getSeo()
         .then(result => {
           const res = result.data.items
 
@@ -42,7 +43,7 @@ export default {
 
               let i = 0
               for (let value of seoContainer.keywords) {
-                if (i < (seoKeywordsCount - 1)) {
+                if (i < seoKeywordsCount - 1) {
                   seoKeywords += `${value}, `
                 } else {
                   seoKeywords += `${value}`
@@ -84,7 +85,7 @@ export default {
 
           return seo
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error)
           // api.errorHandling(error, `SEO @ ${window.location.href}`)
         })

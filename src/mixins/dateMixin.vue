@@ -13,7 +13,7 @@ moment.locale(locale) // returns the new locale
 
 export default {
   methods: {
-    formatDate (date) {
+    formatDate(date) {
       let ret = null
       if (date) {
         ret = moment(date).format(dateFormat)
@@ -21,11 +21,11 @@ export default {
       // console.log('ret: ', ret)
       return ret
     },
-    formatTime (date) {
+    formatTime(date) {
       const timeFormat = 'HH:mm' // 24 hours
       return moment(date).format(timeFormat)
     },
-    elapsed (t1, t2) {
+    elapsed(t1, t2) {
       // console.log('duration: ', t1, t2)
       let elapsed = new Date(t2) - new Date(t1) // time in milliseconds
       // console.log('elapsed: ', elapsed)
@@ -35,7 +35,7 @@ export default {
 
       return res
     },
-    duration (ms) {
+    duration(ms) {
       let d = null
       let h = null
       let m = null

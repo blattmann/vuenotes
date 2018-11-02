@@ -29,12 +29,19 @@
         "back": "back",
         "open": "open",
         "close": "close",
-        "delete": "delete"
+        "delete": "delete",
+        "reset": "reset"
       },
 
       "form": {
         "required": "Required",
         "optional": "Optional",
+        "header": "Form",
+        "subheader": {
+          "add": "Add new note",
+          "edit": "Edit note",
+          "background": "Set background color"
+        },
         "title": {
           "label": "Title",
           "placeholder": "Note title",
@@ -55,6 +62,14 @@
           "titleLength": "Title needs to be longer then 5 characters.",
           "noteLength": "Noteneeds to be longer then 5 characters."
         }
+      },
+
+      "validation": {
+        "charsNotAllowed": "You entered disallowed characters",
+        "minCharsTitle": "Please enter at least 5 characters",
+        "minCharsContent": "Please enter at least 15 characters",
+        "correctTitle": "Please enter a note title",
+        "correctContent": "Please enter some content"
       },
 
       "paging": {

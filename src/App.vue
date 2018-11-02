@@ -1,43 +1,37 @@
 <template>
   <v-app dark>
-    <sb-navigation />
 
     <v-content class="sb-content">
       <router-view/>
     </v-content>
 
+    <sb-fab />
+
+    <sb-bottom-navigation />
+
+    <sb-modal />
+
   </v-app>
 </template>
 
 <script>
-import Navigation from '@/components/navigation/Navigation'
+import BottomNavigation from '@/components/navigation/Bottomnavigation'
+import Fab from '@/components/fab/Fab'
+import Modal from '@/components/modal/Modal'
 
 import EventBus from '@/eventbus'
-import api from '@/api'
+// import api from '@/api'
 
 export default {
   name: 'AppContainer',
   components: {
-    'sb-navigation': Navigation
-  },
-  data() {
-    return {}
-  },
-  created() {},
-  mounted() {
-    const vm = this
-    const eb = EventBus
-
-    eb.$on('logoutbutton', emitResults => {
-      // console.log('logoutbutton: ', emitResults)
-      if (emitResults) {
-        // console.log('logoutbutton: ', emitResults)
-        // vm.logout()
-      }
-    })
-  },
-  methods: {}
+    'sb-bottom-navigation': BottomNavigation,
+    'sb-fab': Fab,
+    'sb-modal': Modal
+  }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+// styles here
+</style>

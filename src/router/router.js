@@ -4,9 +4,6 @@ import VueRouter from 'vue-router'
 // Import routes
 import Routes from './routes'
 
-// Import project settings
-import Settings from '../config/settings'
-
 Vue.use(VueRouter)
 
 // Router START here

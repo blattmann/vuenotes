@@ -23,45 +23,15 @@
 </template>
 
 <script>
-import api from '@/api'
-import EventBus from '@/eventbus'
-
-import cleanerMixin from '@/mixins/cleanerMixin'
-
 export default {
   name: 'NavigationDrawer',
-  mixins: [cleanerMixin],
-  props: [],
   data() {
     return {
-      drawer: true,
+      drawer: false,
       miniVariant: false,
       clipped: true,
       items: this.$root.$data.Settings,
       i18n: this.$root.$data.Translation.navigation
-    }
-  },
-  mounted() {
-    const vm = this
-    const host = vm.$root.host
-    const eb = EventBus
-
-    console.log('items', vm.items)
-    console.log('i18n', vm.i18n)
-    // console.log('settings', vm.settings)
-
-    // toggle navigation drawer
-    eb.$on('drawer', emitResults => {
-      console.log('drawer: ', emitResults)
-      vm.drawer = emitResults
-    })
-  },
-  beforeDestroy() {
-    EventBus.$off('drawer')
-  },
-  methods: {
-    handleClick(url) {
-      // console.log('url: ', url)
     }
   }
 }

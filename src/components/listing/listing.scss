@@ -1,6 +1,12 @@
 .sb-listing {
-  &__card {
-    margin-bottom: sp(16);
+  padding: sp(10);
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: sp(100);
   }
 
   &__background {
@@ -30,6 +36,24 @@
         border-right: 10px solid orange !important;
       }
     }
+
+    &--purple {
+      background-color: purple !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid purple !important;
+      }
+    }
+
+    &--pink {
+      background-color: pink !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid pink !important;
+      }
+    }
   }
 }
 
@@ -38,104 +62,4 @@
   margin: auto 0 !important;
 }
 
-.sb-title {
-  &__middle {
-    padding: sp(15) sp(15) 0 sp(15);
-  }
-}
-
 // HEADS UP: overwrite the default styles of vuetify
-
-.v-table {
-  th {
-    background-color: $color-background-default !important;
-  }
-
-  tr:last-child {
-    border-bottom: sp(1) solid rgba(0, 0, 0, 0.12);
-  }
-}
-
-.v-datatable__progress {
-  display: none;
-}
-
-.v-datatable__actions {
-  bottom: 0;
-  border: none !important;
-  background-color: $color-background-default !important;
-  flex-wrap: nowrap;
-  width: 100%;
-  justify-content: center;
-
-  &__pagination {
-    white-space: nowrap;
-    margin: 0 sp(0) 0 sp(60);
-
-    @include vp-md {
-      // SMALL DESKTOP
-      margin: 0 sp(12) 0 sp(48);
-    }
-
-    @include vp-lg {
-      // DESKTOP
-      margin: 0 sp(24) 0 sp(32);
-    }
-
-    .v-btn--icon {
-      width: sp(20);
-    }
-  }
-
-  &__select {
-    justify-content: flex-start;
-    margin-right: 0;
-    margin-left: sp(24);
-    width: sp(100);
-
-    @include vp-md {
-      // SMALL DESKTOP
-      margin-left: sp(36);
-      width: sp(120);
-    }
-
-    @include vp-lg {
-      // DESKTOP
-      margin-left: sp(36);
-      width: sp(140);
-    }
-
-    .v-select {
-      margin: sp(13) 0 sp(13) sp(25);
-    }
-  }
-
-  .v-btn:last-of-type {
-    margin-left: 0;
-    margin-right: sp(12);
-
-    @include vp-md {
-      // SMALL DESKTOP
-      margin-left: 0;
-      margin-right: sp(24);
-    }
-
-    @include vp-lg {
-      // DESKTOP
-      margin-left: sp(14);
-      margin-right: initial;
-    }
-  }
-}
-
-.v-input {
-  &__slot {
-    &:before {
-      height: sp(2) !important;
-    }
-
-    :after {
-      bottom: sp(-2) !important;
-    }
-  }
-}

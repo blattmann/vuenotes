@@ -1,10 +1,10 @@
 <template>
-<v-snackbar v-model="toast" :bottom="y === 'bottom'" :color="color" :left="x === 'left'" :multi-line="mode === 'multi-line'" :right="x === 'right'" :timeout="timeout" :top="y === 'top'">
-  {{ text }}
-  <v-btn class="sw-toast__btn" flat @click="toast = false">
-    {{ i18n.close }}
-  </v-btn>
-</v-snackbar>
+  <v-snackbar v-model="toast" :bottom="y === 'bottom'" :color="color" :left="x === 'left'" :multi-line="mode === 'multi-line'" :right="x === 'right'" :timeout="timeout" :top="y === 'top'">
+    {{ text }}
+    <v-btn class="sw-toast__btn" flat @click="toast = false">
+      {{ i18n.close }}
+    </v-btn>
+  </v-snackbar>
 </template>
 
 <script>
@@ -16,19 +16,18 @@ import EventBus from '@/eventbus'
 export default {
   name: 'ToastComponent',
   props: ['snackbar', 'y', 'color', 'x', 'mode', 'timeout', 'text'],
-  data () {
+  data() {
     return {
       i18n: this.$root.$data.Translation,
       toast: false
     }
   },
   watch: {
-    toast: (value) => {
-      const vm = this
+    toast: value => {
       EventBus.$emit('toastChange', value)
     }
   },
-  created () {
+  created() {
     const vm = this
     vm.toast = vm.snackbar
     console.log(vm.color)
