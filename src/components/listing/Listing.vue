@@ -4,12 +4,12 @@
     <v-progress-linear v-if="loading" class="sb-progress" slot="progress" color="blue" indeterminate></v-progress-linear>
 
     <v-timeline>
-      <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing" v-if="item">
+      <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing">
 
         <!-- <span slot="opposite">{{ key }}</span> -->
         <v-card class="elevation-2" :class="setBackgroundColor(item.background)">
-          <v-card-title class="headline">{{ item.title }}</v-card-title>
-          <v-card-text>{{ item.content }}</v-card-text>
+          <v-card-title class="headline sb-wordbreak">{{ item.title }}</v-card-title>
+          <v-card-text class="sb-wordbreak">{{ item.content }}</v-card-text>
 
           <v-layout justify-center>
             <v-card-actions>
@@ -62,7 +62,7 @@ export default {
       api.getNotes().then(data => {
         vm.listingContent = data.val()
 
-        if (data.val().length > 1) {
+        if (data.val()) {
           vm.loading = false
         }
       })
