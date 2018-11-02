@@ -17,6 +17,7 @@ import Regex from '@/config/regex'
 
 // Import global plugims
 import Translation from '@/plugins/translation'
+import Toaster from '@/plugins/toast'
 
 // Import main component
 import App from '@/App'
@@ -28,6 +29,7 @@ import router from '@/router/router'
 Vue.use(sbVuePlugins)
 Vue.use(GlobalConfig)
 Vue.use(Translation)
+Vue.use(Toaster)
 
 window.Promise = Promise
 

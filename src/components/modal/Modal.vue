@@ -134,8 +134,8 @@ export default {
       const vm = this
       let data = null
       if (id) {
-        api.getNote(id).then(data => {
-          data = data.val()
+        api.getNote(id).then(ref => {
+          data = ref.val()
 
           vm.form.id = id
           vm.form.title = data.title
@@ -206,12 +206,12 @@ export default {
             .then(response => {
               console.log(response)
               // show toast
-              // vm.$showToast(vm, vm.i18n.toastUserSaved, 'success')
+              vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
             })
             .catch(error => {
               console.error(error)
               // show toast
-              // vm.$showToast(vm, vm.i18n.toastUserError + ' ' + vm.processError(error), 'error')
+              vm.$showToast(vm, vm.i18n.toast.toastDataError + ' ' + vm.processError(error), 'error')
             })
         } else {
           // call api to save
@@ -226,12 +226,12 @@ export default {
             .then(response => {
               console.log(response)
               // show toast
-              // vm.$showToast(vm, vm.i18n.toastUserSaved, 'success')
+              vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
             })
             .catch(error => {
               console.error(error)
               // show toast
-              // vm.$showToast(vm, vm.i18n.toastUserError + ' ' + vm.processError(error), 'error')
+              vm.$showToast(vm, vm.i18n.toast.toastDataError + ' ' + vm.processError(error), 'error')
             })
         }
       }

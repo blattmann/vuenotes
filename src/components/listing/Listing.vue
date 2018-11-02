@@ -51,6 +51,11 @@ export default {
       this.getNotes()
     }
   },
+  // computed: {
+  //   listingContent: function() {
+  //     this.getNotes()
+  //   }
+  // },
   methods: {
     getNotes() {
       const vm = this
@@ -61,6 +66,21 @@ export default {
           vm.loading = false
         }
       })
+    },
+    deleteNote(id) {
+      const vm = this
+      api
+        .deleteNote(id)
+        .then(response => {
+          console.log(response)
+          // show toast
+          vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'success')
+        })
+        .catch(error => {
+          console.error(error)
+          // show toast
+          vm.$showToast(vm, vm.i18n.toast.toastDataError + ' ' + vm.processError(error), 'error')
+        })
     },
     setBackgroundColor(color) {
       let ret = ''
@@ -76,7 +96,7 @@ export default {
       }
 
       if (selector === 'delete') {
-        eb.$emit('deleteNote', id)
+        this.deleteNote(id)
       }
     }
   }

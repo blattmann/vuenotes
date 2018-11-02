@@ -72,6 +72,13 @@
         "correctContent": "Please enter some content"
       },
 
+      "toast": {
+        "toastNoData": "Note could not be found.",
+        "toastDataSaved": "Note stored.",
+        "toastDataDeleted": "Note deleted.",
+        "toastDataError": "An error occurred."
+      },
+
       "paging": {
         "of": "of"
       },

@@ -19,9 +19,6 @@ import BottomNavigation from '@/components/navigation/Bottomnavigation'
 import Fab from '@/components/fab/Fab'
 import Modal from '@/components/modal/Modal'
 
-import EventBus from '@/eventbus'
-// import api from '@/api'
-
 export default {
   name: 'AppContainer',
   components: {

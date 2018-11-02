@@ -11,3 +11,32 @@ body {
 .fade-leave-to {
   opacity: 0.3;
 }
+
+.sb-toast {
+  &__container {
+    top: 1% !important;
+  }
+
+  &__content {
+    font-size: sp(18) !important;
+    font-family: Roboto;
+    font-weight: 600 !important;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: -0.1px;
+    justify-content: center !important;
+
+    &--success {
+      background-color: $color-success !important;
+    }
+
+    &--warning {
+      background-color: $color-warning !important;
+    }
+
+    &--error {
+      background-color: $color-error !important;
+    }
+  }
+}

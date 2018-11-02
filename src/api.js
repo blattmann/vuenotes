@@ -46,7 +46,12 @@ export default {
     return res
   },
 
-  deleteNote(id) {},
+  deleteNote(id) {
+    const db = Firebase.database()
+    const path = `opensource/notebook/${id}`
+    const res = db.ref(path).remove()
+    return res
+  },
 
   // Get language paramaters
   getLanguePack(lang) {
