@@ -11,6 +11,8 @@
 
     <sb-modal />
 
+    <sb-dialog />
+
   </v-app>
 </template>
 
@@ -18,13 +20,15 @@
 import BottomNavigation from '@/components/navigation/Bottomnavigation'
 import Fab from '@/components/fab/Fab'
 import Modal from '@/components/modal/Modal'
+import Dialog from '@/components/dialog/Dialog'
 
 export default {
   name: 'AppContainer',
   components: {
     'sb-bottom-navigation': BottomNavigation,
     'sb-fab': Fab,
-    'sb-modal': Modal
+    'sb-modal': Modal,
+    'sb-dialog': Dialog
   }
 }
 </script>

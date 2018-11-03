@@ -36,6 +36,7 @@ export default {
     const db = Firebase.database()
     const path = `opensource/notebook`
     const res = db.ref(path).push(payload)
+    // const res = db.ref(path).set(payload)
     return res
   },
 

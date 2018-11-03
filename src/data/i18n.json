@@ -79,6 +79,19 @@
         "toastDataError": "An error occurred."
       },
 
+      "dialog": {
+        "header": {
+          "delete": "Delete the current note"
+        },
+        "body": {
+          "delete": "You will not be able to recover this"
+        },
+        "button": {
+          "cancel": "Cancel",
+          "delete": "Delete"
+        }
+      },
+
       "paging": {
         "of": "of"
       },

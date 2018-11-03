@@ -11,47 +11,47 @@
 
   &__background {
     &--blue {
-      background-color: blue !important;
+      background-color: $color-card-background--blue !important;
 
       &:before,
       &:after {
-        border-right: 10px solid blue !important;
+        border-right: 10px solid $color-card-background--blue !important;
       }
     }
 
     &--green {
-      background-color: green !important;
+      background-color: $color-card-background--green !important;
 
       &:before,
       &:after {
-        border-right: 10px solid green !important;
+        border-right: 10px solid $color-card-background--green !important;
       }
     }
 
     &--orange {
-      background-color: orange !important;
+      background-color: $color-card-background--orange !important;
 
       &:before,
       &:after {
-        border-right: 10px solid orange !important;
+        border-right: 10px solid $color-card-background--orange !important;
       }
     }
 
     &--purple {
-      background-color: purple !important;
+      background-color: $color-card-background--purple !important;
 
       &:before,
       &:after {
-        border-right: 10px solid purple !important;
+        border-right: 10px solid $color-card-background--purple !important;
       }
     }
 
     &--pink {
-      background-color: pink !important;
+      background-color: $color-card-background--pink !important;
 
       &:before,
       &:after {
-        border-right: 10px solid pink !important;
+        border-right: 10px solid $color-card-background--pink !important;
       }
     }
   }

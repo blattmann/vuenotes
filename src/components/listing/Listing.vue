@@ -1,16 +1,15 @@
 <template>
   <div xs12>
-
     <v-progress-linear v-if="loading" class="sb-progress" slot="progress" color="blue" indeterminate></v-progress-linear>
-
     <v-timeline>
-      <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing">
-
-        <!-- <span slot="opposite">{{ key }}</span> -->
+      <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing" v-chat-scroll="{always: true, smooth: true}">
         <v-card class="elevation-2" :class="setBackgroundColor(item.background)">
-          <v-card-title class="headline sb-wordbreak">{{ item.title }}</v-card-title>
-          <v-card-text class="sb-wordbreak">{{ item.content }}</v-card-text>
-
+          <v-card-title class="headline sb-wordbreak">
+            {{ item.title }}
+          </v-card-title>
+          <v-card-text class="sb-wordbreak">
+            {{ item.content }}
+          </v-card-text>
           <v-layout justify-center>
             <v-card-actions>
               <v-btn dark fab color="primary" @click="clickButton('edit', key)">
@@ -21,12 +20,9 @@
               </v-btn>
             </v-card-actions>
           </v-layout>
-
         </v-card>
-
       </v-timeline-item>
     </v-timeline>
-
   </div>
 </template>
 
@@ -45,25 +41,52 @@ export default {
   },
   created() {
     this.getNotes()
+    this.count()
+  },
+  mounted() {
+    const vm = this
+    const eb = EventBus
+
+    eb.$on('deleteNote', emitResults => {
+      vm.deleteNote(emitResults)
+    })
+
+    eb.$on('receiveNote', emitResults => {
+      console.log('emitResults: ', emitResults)
+      vm.getNotes()
+    })
   },
   watch: {
-    listingContent: function() {
+    listingContent() {
       this.getNotes()
     }
   },
-  // computed: {
-  //   listingContent: function() {
-  //     this.getNotes()
-  //   }
-  // },
+  beforeDestroy() {
+    const eb = EventBus
+    eb.$off('deleteNote')
+    eb.$off('receiveNote')
+  },
   methods: {
+    // count() {
+    //   const lc = this.listingContent
+    //   const count = Object.keys(lc)
+    //   console.log('count: ', count)
+    //   this.counter = count
+    // },
     getNotes() {
       const vm = this
       api.getNotes().then(data => {
+        // console.log('data: ', data.numChildren())
         vm.listingContent = data.val()
 
         if (data.val()) {
           vm.loading = false
+        }
+
+        if (data.numChildren() <= 1) {
+          this.$router.push({
+            name: 'notes'
+          })
         }
       })
     },
@@ -72,9 +95,13 @@ export default {
       api
         .deleteNote(id)
         .then(response => {
-          console.log(response)
           // show toast
-          vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'success')
+          vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'warning')
+
+          // vm.$router.push({
+          //   path: '/notes'
+          // })
+          // vm.$forceUpdate()
         })
         .catch(error => {
           console.error(error)
@@ -96,7 +123,7 @@ export default {
       }
 
       if (selector === 'delete') {
-        this.deleteNote(id)
+        eb.$emit('showDialog', id)
       }
     }
   }

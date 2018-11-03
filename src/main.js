@@ -18,6 +18,7 @@ import Regex from '@/config/regex'
 // Import global plugims
 import Translation from '@/plugins/translation'
 import Toaster from '@/plugins/toast'
+import VueChatScroll from 'vue-chat-scroll'
 
 // Import main component
 import App from '@/App'
@@ -30,6 +31,7 @@ Vue.use(sbVuePlugins)
 Vue.use(GlobalConfig)
 Vue.use(Translation)
 Vue.use(Toaster)
+Vue.use(VueChatScroll)
 
 window.Promise = Promise
 

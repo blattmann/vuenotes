@@ -1,8 +1,5 @@
-.sb-modal {
-}
-
-// HEADS UP: overwrite the default styles of vuetify
-
-.v-dialog {
-  width: sp(450);
+.sb-button {
+  &__background {
+    margin-left: sp(1) !important;
+  }
 }

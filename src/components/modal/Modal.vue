@@ -33,7 +33,7 @@
               </v-flex>
 
               <v-flex>
-                <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab :color="item" @click="setBackground(item)"></v-btn>
+                <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab :color="item" class="sb-button__background" @click="setBackground(item)"></v-btn>
               </v-flex>
             </v-form>
           </v-flex>
@@ -98,7 +98,6 @@ export default {
         vm.modalBackground = null
         vm.dialog = true
         vm.translation.subheader = vm.i18n.form.subheader.add
-        console.log('addNote: ', emitResults)
       }
     })
 
@@ -109,17 +108,7 @@ export default {
         vm.dialog = true
         vm.modalType = 'edit'
         vm.translation.subheader = vm.i18n.form.subheader.edit
-        // console.log('editNote: ', emitResults)
         vm.getNote(emitResults)
-      }
-    })
-
-    eb.$on('deleteNote', emitResults => {
-      // console.log('deleteNote: ', emitResults)
-      if (emitResults) {
-        vm.dialog = true
-        console.log('deleteNote: ', emitResults)
-        // vm.logout()
       }
     })
   },
@@ -136,7 +125,6 @@ export default {
       if (id) {
         api.getNote(id).then(ref => {
           data = ref.val()
-
           vm.form.id = id
           vm.form.title = data.title
           vm.form.content = data.content
@@ -149,7 +137,6 @@ export default {
       const vm = this
       const i18ne = vm.$root.$data.Translation.validation
       const patternName = vm.$root.$data.Regex.name
-      // console.log('passValidation: ', item, value)
 
       let ret = ''
       if (value) {
@@ -192,19 +179,25 @@ export default {
     },
     saveData() {
       const vm = this
+      const eb = EventBus
       const form = vm.form
+      if (!vm.modalBackground) {
+        form.background = 'blue'
+      } else {
+        form.background = vm.modalBackground
+      }
 
       if (vm.$refs.modalform.validate()) {
         console.log('saveData valid')
         if (vm.modalType === 'edit') {
-          // call api to save
           const id = form.id
           delete form.id
 
+          // call api to save
           api
             .editNote(id, form)
             .then(response => {
-              console.log(response)
+              vm.$refs.modalform.reset()
               // show toast
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
             })
@@ -215,18 +208,15 @@ export default {
             })
         } else {
           // call api to save
-          if (!vm.modalBackground) {
-            form.background = 'blue'
-          } else {
-            form.background = vm.modalBackground
-          }
-
+          console.log('save')
           api
             .addNote(form)
             .then(response => {
-              console.log(response)
+              vm.$refs.modalform.reset()
               // show toast
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
+
+              eb.$emit('receiveNote', true)
             })
             .catch(error => {
               console.error(error)
@@ -241,7 +231,6 @@ export default {
     },
     reset() {
       const vm = this
-      console.log('reset form editing')
       vm.showReset = false
       vm.valid = false
 
