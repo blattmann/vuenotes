@@ -45,8 +45,8 @@
 
       "validation": {
         "charsNotAllowed": "You entered disallowed characters",
-        "minCharsTitle": "Please enter at least 5 characters",
-        "minCharsContent": "Please enter at least 15 characters",
+        "minCharsTitle": "Please enter at least 3 characters",
+        "minCharsContent": "Please enter at least 5 characters",
         "correctTitle": "Please enter a note title",
         "correctContent": "Please enter some content"
       },

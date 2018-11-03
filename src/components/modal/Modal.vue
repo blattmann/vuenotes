@@ -135,12 +135,12 @@ export default {
       if (value) {
         switch (item) {
           case 'title':
-            if (patternName.test(value) && value.length >= 5) {
+            if (patternName.test(value) && value.length >= 3) {
               ret = true
             } else {
               if (!patternName.test(value)) {
                 ret = i18ne.charsNotAllowed
-              } else if (value.length <= 5) {
+              } else if (value.length <= 3) {
                 ret = i18ne.minCharsTitle
               } else {
                 ret = i18ne.correctTitle
@@ -148,12 +148,12 @@ export default {
             }
             break
           case 'content':
-            if (patternName.test(value) && value.length >= 15) {
+            if (patternName.test(value) && value.length >= 5) {
               ret = true
             } else {
               if (!patternName.test(value)) {
                 ret = i18ne.charsNotAllowed
-              } else if (value.length <= 15) {
+              } else if (value.length <= 5) {
                 ret = i18ne.minCharsContent
               } else {
                 ret = i18ne.correctName
@@ -232,13 +232,13 @@ export default {
       let errorContent = true
 
       if (title) {
-        if (title.length >= 5) {
+        if (title.length >= 3) {
           errorTitle = false
         }
       }
 
       if (content) {
-        if (content.length >= 15) {
+        if (content.length >= 5) {
           errorContent = false
         }
       }
