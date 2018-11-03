@@ -28,6 +28,15 @@
       }
     }
 
+    &--darkgrey {
+      background-color: $color-card-background--darkgrey !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--darkgrey !important;
+      }
+    }
+
     &--orange {
       background-color: $color-card-background--orange !important;
 

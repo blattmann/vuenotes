@@ -19,15 +19,15 @@
             <h1 class="title">{{ translation.subheader }}</h1>
 
             <v-form ref="modalform" v-model="valid" lazy-validation v-cloak>
-              <v-flex>
+              <v-flex class="mb-3">
                 <v-text-field :label="i18n.form.title.label" :value="form.title" v-model="form.title" :rules="[rules.required, rules.title.check]" @change="allowCancel()" @keyup="checkError()"></v-text-field>
               </v-flex>
-              <v-flex>
+              <v-flex class="mb-3">
                 <v-textarea :label="i18n.form.note.label" :value="form.content" v-model="form.content" :rules="[rules.required, rules.content.check]" @change="allowCancel()" @keyup="checkError()"></v-textarea>
               </v-flex>
               <v-flex mt-2>
                 <p>{{ i18n.form.subheader.background }}</p>
-                <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab :color="item" class="sb-button__background" @click="setBackground(item)"></v-btn>
+                <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab small :color="item" class="sb-button__background" @click="setBackground(item)"></v-btn>
               </v-flex>
             </v-form>
           </v-flex>
@@ -174,7 +174,7 @@ export default {
       const form = vm.form
 
       if (!vm.modalBackground) {
-        form.background = 'blue'
+        form.background = ''
       } else {
         form.background = vm.modalBackground
       }

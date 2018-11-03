@@ -59,3 +59,17 @@ body {
   // Adds a hyphen where the word breaks, if supported (No Blink)
   hyphens: auto;
 }
+
+.v-messages {
+  &__message {
+    // background-color: rgba(0, 0, 0, 0.7);
+    // padding: sp(5);
+    font-weight: 600;
+    font-size: sp(16);
+  }
+}
+
+.v-label--active.error--text {
+  font-weight: 800;
+  font-size: sp(20);
+}
