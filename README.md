@@ -1,6 +1,16 @@
 # vuenotes
 
-Simple note taking app
+Simple note taking app.
+
+Features:
+
+- List notes
+- Add a note
+- Edit a note
+- Delete a note
+
+Each note looks like a colored rectangular box.
+Boxes can be colored in different colors, selected from a fixed list of colors.
 
 ## Project setup
 
