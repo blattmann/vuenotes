@@ -1,7 +1,6 @@
 <template>
   <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
     <v-card :color="modalBackground">
-
       <v-toolbar dark color="primary">
         <v-btn icon dark @click.native="dialog = false">
           <v-icon>close</v-icon>
@@ -10,7 +9,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn v-if="showReset" dark flat @click.native="reset()">{{ i18n.button.reset }}</v-btn>
-          <v-btn dark flat @click.native="dialog = false; saveData()">{{ i18n.button.save }}</v-btn>
+          <v-btn dark flat :disabled="error" @click.native="dialog = false; saveData()">{{ i18n.button.save }}</v-btn>
         </v-toolbar-items>
       </v-toolbar>
 
@@ -21,18 +20,13 @@
 
             <v-form ref="modalform" v-model="valid" lazy-validation v-cloak>
               <v-flex>
-                <v-text-field :label="i18n.form.title.label" :value="form.title" v-model="form.title" :rules="[rules.required, rules.title.check]" @change="allowCancel()"></v-text-field>
+                <v-text-field :label="i18n.form.title.label" :value="form.title" v-model="form.title" :rules="[rules.required, rules.title.check]" @change="allowCancel()" @keyup="checkError()"></v-text-field>
               </v-flex>
-
               <v-flex>
-                <v-textarea :label="i18n.form.note.label" :value="form.content" v-model="form.content" :rules="[rules.required, rules.content.check]" @change="allowCancel()"></v-textarea>
+                <v-textarea :label="i18n.form.note.label" :value="form.content" v-model="form.content" :rules="[rules.required, rules.content.check]" @change="allowCancel()" @keyup="checkError()"></v-textarea>
               </v-flex>
-
               <v-flex mt-2>
                 <p>{{ i18n.form.subheader.background }}</p>
-              </v-flex>
-
-              <v-flex>
                 <v-btn v-for="(item, key) in background" :key="key" v-model="form.background" fab :color="item" class="sb-button__background" @click="setBackground(item)"></v-btn>
               </v-flex>
             </v-form>
@@ -40,7 +34,6 @@
 
         </v-layout>
       </v-container>
-
     </v-card>
   </v-dialog>
 </template>
@@ -79,7 +72,8 @@ export default {
           }
         }
       },
-      errorMessages: {}
+      errorMessages: {},
+      error: true
     }
   },
   created() {
@@ -92,7 +86,6 @@ export default {
     const eb = EventBus
 
     eb.$on('addNote', emitResults => {
-      // console.log('addNote: ', emitResults)
       if (emitResults) {
         vm.form = {}
         vm.modalBackground = null
@@ -173,14 +166,13 @@ export default {
       } else {
         ret = false
       }
-
-      // console.log('ret: ', ret)
       return ret
     },
     saveData() {
       const vm = this
       const eb = EventBus
       const form = vm.form
+
       if (!vm.modalBackground) {
         form.background = 'blue'
       } else {
@@ -188,9 +180,9 @@ export default {
       }
 
       if (vm.$refs.modalform.validate()) {
-        console.log('saveData valid')
         if (vm.modalType === 'edit') {
           const id = form.id
+          // remove id from form object
           delete form.id
 
           // call api to save
@@ -200,6 +192,8 @@ export default {
               vm.$refs.modalform.reset()
               // show toast
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
+              // redirect to notes listing if on different page
+              vm.redirect()
             })
             .catch(error => {
               console.error(error)
@@ -208,7 +202,6 @@ export default {
             })
         } else {
           // call api to save
-          console.log('save')
           api
             .addNote(form)
             .then(response => {
@@ -217,6 +210,8 @@ export default {
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
 
               eb.$emit('receiveNote', true)
+              // redirect to notes listing if on different page
+              vm.redirect()
             })
             .catch(error => {
               console.error(error)
@@ -228,6 +223,31 @@ export default {
     },
     allowCancel() {
       this.showReset = true
+    },
+    checkError() {
+      const vm = this
+      const title = vm.form.title
+      const content = vm.form.content
+      let errorTitle = true
+      let errorContent = true
+
+      if (title) {
+        if (title.length >= 5) {
+          errorTitle = false
+        }
+      }
+
+      if (content) {
+        if (content.length >= 15) {
+          errorContent = false
+        }
+      }
+
+      if (!errorTitle && !errorContent) {
+        vm.error = false
+      } else {
+        vm.error = true
+      }
     },
     reset() {
       const vm = this
@@ -242,6 +262,18 @@ export default {
     },
     setBackground(color) {
       this.modalBackground = color
+    },
+    redirect() {
+      const vm = this
+      const path = vm.$route.path
+      if (path !== '/notes') {
+        EventBus.$emit('updateNavi', true)
+
+        vm.$router.push({
+          name: 'notes'
+        })
+        vm.$forceUpdate()
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import './plugins/vuetify'
 import sbVuePlugins from '@blattmann/vue-plugins'
+import '@/plugins/vuetify'
 // import "./registerServiceWorker";
 
 // API call
@@ -49,38 +49,14 @@ if (document.getElementById('app')) {
         Settings,
         Regex,
         router,
-        bgimage: '',
-        windowWidth: 0,
         path: '/',
         host: window.location.host.split('.')[0]
       }
     },
     created() {
-      this.getTranslation()
-    },
-    mounted() {
-      // Get the current viewport width
-      this.$nextTick = () => {
-        window.addEventListener('resize', this.getWindowWidth)
-
-        // Init
-        this.getWindowWidth()
-      }
-    },
-    beforeUpdate() {
-      // Init
-      this.getWindowWidth()
+      this.Translation = api.getLanguePack('en')
     },
     methods: {
-      getWindowWidth(event) {
-        this.windowWidth = document.documentElement.clientWidth
-        // console.log('this.windowWidth: ', this.windowWidth)
-      },
-      getTranslation() {
-        // Call api for some local data
-        let content = api.getLanguePack('en')
-        this.Translation = content
-      },
       // PWA stuff
       checkServiceWorkers() {
         if ('serviceWorker' in navigator) {

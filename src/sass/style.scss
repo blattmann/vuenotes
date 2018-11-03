@@ -2,6 +2,10 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.33s;
@@ -14,7 +18,7 @@ body {
 
 .sb-toast {
   &__container {
-    top: 1% !important;
+    bottom: 25% !important;
   }
 
   &__content {

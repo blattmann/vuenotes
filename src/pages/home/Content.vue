@@ -8,7 +8,11 @@
           <div class="hello">
             <h1>Welcome to vuenotes</h1>
             <p>
-              Lorem ipsum
+              This is a simple notes taking app. You may add / edit and delete some notes.
+            </p>
+            <p>
+              &copy; 2018
+              <a class="sb-home__link" href="https://stefan-blattmann.com/" target="_blank">Stefan Blattmann</a>
             </p>
           </div>
         </div>

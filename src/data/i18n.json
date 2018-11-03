@@ -1,21 +1,10 @@
 {
   "translations": {
     "en": {
-      "title": "vuenotes",
-      "welcome-placeholder": "vuenotes - No data available!",
-      "title-not-set": "",
-      "content-not-set": "No content available",
-      "show-more": "Show more",
-      "show-less": "Show less",
-
       "navigation": {
         "home": "Home",
         "about": "About",
         "notes": "Notes"
-      },
-
-      "footer": {
-        "copyright": "Stefan Blattmann 2018."
       },
 
       "button": {
@@ -51,16 +40,6 @@
           "label": "Note",
           "placeholder": "Your note",
           "error": "Please enter a note"
-        },
-        "confirmation": {
-          "text": "Your data was successfully stored.",
-          "link": "",
-          "linktext": "Return to form"
-        },
-        "error": {
-          "required": "This field is required.",
-          "titleLength": "Title needs to be longer then 5 characters.",
-          "noteLength": "Noteneeds to be longer then 5 characters."
         }
       },
 
@@ -85,31 +64,16 @@
         },
         "body": {
           "delete": "You will not be able to recover this"
-        },
-        "button": {
-          "cancel": "Cancel",
-          "delete": "Delete"
         }
-      },
-
-      "paging": {
-        "of": "of"
       },
 
       "hint": {
-        "no-articles-found-header": "No data available",
-        "no-articles-found": "No info available. Please check back later."
+        "header": "No data available",
+        "content": "No info available. Please check back later."
       },
 
-      "e404": {
-        "pageTitle": "404 - Page not found",
-        "title": "Sorry, this page doesn’t exist",
-        "sections": {
-          "hero": {
-            "title": "Sorry, this page doesn’t exist",
-            "button": "Go home"
-          }
-        }
+      "footer": {
+        "copyright": "Stefan Blattmann 2018."
       }
     }
   }

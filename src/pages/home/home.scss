@@ -1,4 +1,13 @@
 .sb-home {
   text-align: center;
   padding-top: sp(30);
+
+  &__link {
+    color: $color-white-paper-white;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

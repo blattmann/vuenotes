@@ -23,7 +23,7 @@ const toast = {
 
       vm.$toasted.show(message, {
         theme: 'bubble',
-        position: 'top-center',
+        position: 'bottom-center',
         fullWidth: true,
         fitToScreen: false,
         singleton: true,

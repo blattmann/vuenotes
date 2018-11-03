@@ -1,7 +1,7 @@
 <template>
   <div xs12>
-    <v-progress-linear v-if="loading" class="sb-progress" slot="progress" color="blue" indeterminate></v-progress-linear>
-    <v-timeline>
+    <v-progress-linear v-if="loading && itemCount > 0" class="sb-progress" slot="progress" color="blue" indeterminate></v-progress-linear>
+    <v-timeline v-if="itemCount > 0">
       <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing" v-chat-scroll="{always: true, smooth: true}">
         <v-card class="elevation-2" :class="setBackgroundColor(item.background)">
           <v-card-title class="headline sb-wordbreak">
@@ -23,6 +23,19 @@
         </v-card>
       </v-timeline-item>
     </v-timeline>
+
+    <v-layout v-else row wrap class="sb-main__container" v-cloak>
+      <v-flex xs6 offset-xs3 class="sb-column">
+        <div class="sb-about">
+          <div class="hello">
+            <h1>{{ i18n.hint.header }}</h1>
+            <p>
+              {{ i18n.hint.content }}
+            </p>
+          </div>
+        </div>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -36,12 +49,12 @@ export default {
     return {
       i18n: this.$root.$data.Translation,
       listingContent: [],
-      loading: true
+      loading: true,
+      itemCount: 1 // set to 1 to avoid "no data available" flickering
     }
   },
   created() {
     this.getNotes()
-    this.count()
   },
   mounted() {
     const vm = this
@@ -52,7 +65,6 @@ export default {
     })
 
     eb.$on('receiveNote', emitResults => {
-      console.log('emitResults: ', emitResults)
       vm.getNotes()
     })
   },
@@ -67,26 +79,27 @@ export default {
     eb.$off('receiveNote')
   },
   methods: {
-    // count() {
-    //   const lc = this.listingContent
-    //   const count = Object.keys(lc)
-    //   console.log('count: ', count)
-    //   this.counter = count
-    // },
     getNotes() {
       const vm = this
       api.getNotes().then(data => {
-        // console.log('data: ', data.numChildren())
         vm.listingContent = data.val()
 
-        if (data.val()) {
+        if (vm.listingContent) {
+          let count = Object.keys(vm.listingContent).length
+          vm.itemCount = count
+        } else {
+          vm.itemCount = 0
+        }
+
+        if (data.val() || vm.itemCount === 0) {
           vm.loading = false
         }
 
-        if (data.numChildren() <= 1) {
-          this.$router.push({
+        if (vm.itemCount === 0) {
+          vm.$router.push({
             name: 'notes'
           })
+          vm.$forceUpdate()
         }
       })
     },
@@ -97,11 +110,6 @@ export default {
         .then(response => {
           // show toast
           vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'warning')
-
-          // vm.$router.push({
-          //   path: '/notes'
-          // })
-          // vm.$forceUpdate()
         })
         .catch(error => {
           console.error(error)

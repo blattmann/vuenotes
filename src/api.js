@@ -21,49 +21,40 @@ export default {
   getNotes() {
     const db = Firebase.database()
     const path = 'opensource/notebook'
-    const res = db.ref(path).once('value')
-    return res
+    return db.ref(path).once('value')
   },
 
   getNote(id) {
     const db = Firebase.database()
     const path = `opensource/notebook/${id}`
-    const res = db.ref(path).once('value')
-    return res
+    return db.ref(path).once('value')
   },
 
   addNote(payload) {
     const db = Firebase.database()
     const path = `opensource/notebook`
-    const res = db.ref(path).push(payload)
-    // const res = db.ref(path).set(payload)
-    return res
+    return db.ref(path).push(payload)
   },
 
   editNote(id, payload) {
     const db = Firebase.database()
     const path = `opensource/notebook/${id}`
-    const res = db.ref(path).set(payload)
-    return res
+    return db.ref(path).set(payload)
   },
 
   deleteNote(id) {
     const db = Firebase.database()
     const path = `opensource/notebook/${id}`
-    const res = db.ref(path).remove()
-    return res
+    return db.ref(path).remove()
   },
 
   // Get language paramaters
   getLanguePack(lang) {
     const trans = StaticData
-    let ret = ''
     /* eslint-disable */
     if (lang === '') {
       lang = 'en'
     }
-    ret = trans.translations[lang]
-
-    return ret
+    return trans.translations[lang]
   }
 }
