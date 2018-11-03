@@ -12,6 +12,10 @@ Features:
 Each note looks like a colored rectangular box.
 Boxes can be colored in different colors, selected from a fixed list of colors.
 
+## Live demo
+
+> https://vnotes.netlify.com
+
 ## Project setup
 
 ```
