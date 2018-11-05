@@ -1,7 +1,7 @@
 <template>
   <v-container fluid ma-0 pa-0>
     <v-layout row wrap class="sb-main__container">
-      <v-flex xs6 offset-xs3 class="sb-column">
+      <v-flex xs4 offset-xs4 class="sb-column">
         <div class="sb-about">
           <img alt="Vue logo" src="../../assets/logo.png">
           <div class="hello">
