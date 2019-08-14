@@ -64,7 +64,7 @@ export default {
       vm.deleteNote(emitResults)
     })
 
-    eb.$on('receiveNote', emitResults => {
+    eb.$on('receiveNote', () => {
       vm.getNotes()
     })
   },
@@ -107,7 +107,7 @@ export default {
       const vm = this
       api
         .deleteNote(id)
-        .then(response => {
+        .then(() => {
           // show toast
           vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'warning')
         })

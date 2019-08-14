@@ -25,7 +25,7 @@ export default {
     }
   },
   mounted() {
-    EventBus.$on('updateNavi', emitResults => {
+    EventBus.$on('updateNavi', () => {
       this.bottomNav = 'note'
     })
   },

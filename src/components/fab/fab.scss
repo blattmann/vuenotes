@@ -1,5 +1,7 @@
 .sb-fab {
   &__add {
-    bottom: sp(80) !important;
+    border: sp(3) solid rgba(0,0,0,.2) !important;
+    right: sp(10);
+    bottom: sp(75) !important;
   }
 }

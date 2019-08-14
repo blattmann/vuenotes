@@ -188,7 +188,7 @@ export default {
           // call api to save
           api
             .editNote(id, form)
-            .then(response => {
+            .then(() => {
               vm.$refs.modalform.reset()
               // show toast
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
@@ -204,7 +204,7 @@ export default {
           // call api to save
           api
             .addNote(form)
-            .then(response => {
+            .then(() => {
               vm.$refs.modalform.reset()
               // show toast
               vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success')
