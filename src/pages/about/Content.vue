@@ -1,9 +1,20 @@
 <template>
-  <v-container fluid ma-0 pa-0>
-    <v-layout row wrap class="sb-main__container">
+  <v-container
+    fluid
+    ma-0
+    pa-0
+  >
+    <v-layout
+      row
+      wrap
+      class="sb-main__container"
+    >
       <v-flex class="sb-column">
         <div class="sb-about">
-          <img alt="Vue logo" src="../../assets/logo.png">
+          <img
+            alt="Vue logo"
+            src="../../assets/logo.png"
+          >
           <div class="hello">
             <h1>Hi, I'm Stefan!</h1>
             <p>
@@ -19,6 +30,6 @@
 
 <script>
 export default {
-  name: 'About'
-}
+  name: 'About',
+};
 </script>

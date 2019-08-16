@@ -8,19 +8,19 @@ export default [
       metaTags: [
         {
           name: 'description',
-          content: 'A simple notes taking app.'
+          content: 'A simple notes taking app.',
         },
         {
           property: 'og:description',
-          content: 'A simple notes taking app.'
+          content: 'A simple notes taking app.',
         },
         {
           name: 'keywords',
-          content: 'vuenotes, vue, vue.js, stefan blattmann'
-        }
+          content: 'vuenotes, vue, vue.js, stefan blattmann',
+        },
       ],
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: '/about',
@@ -31,19 +31,19 @@ export default [
       metaTags: [
         {
           name: 'description',
-          content: 'Stefan Blattman - Short info.'
+          content: 'Stefan Blattman - Short info.',
         },
         {
           property: 'og:description',
-          content: 'Stefan Blattman - Short info.'
+          content: 'Stefan Blattman - Short info.',
         },
         {
           name: 'keywords',
-          content: 'vuenotes, vue, vue.js, stefan blattmann'
-        }
+          content: 'vuenotes, vue, vue.js, stefan blattmann',
+        },
       ],
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   {
     path: '/notes',
@@ -54,23 +54,23 @@ export default [
       metaTags: [
         {
           name: 'description',
-          content: 'Notes listing'
+          content: 'Notes listing',
         },
         {
           property: 'og:description',
-          content: 'Notes listing'
+          content: 'Notes listing',
         },
         {
           name: 'keywords',
-          content: 'vuenotes, vue, vue.js, stefan blattmann'
-        }
+          content: 'vuenotes, vue, vue.js, stefan blattmann',
+        },
       ],
-      requiresAuth: false
-    }
+      requiresAuth: false,
+    },
   },
   // All invalid routes will redirect here
   {
     path: '*',
-    redirect: '/'
-  }
-]
+    redirect: '/',
+  },
+];

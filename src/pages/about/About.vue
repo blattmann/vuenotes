@@ -1,14 +1,15 @@
 <template>
-  <sb-content/>
+  <sb-content />
 </template>
 
 <script>
-import Content from '@/pages/about/Content'
+import Content from '@/pages/about/Content';
+
 export default {
   name: 'About',
   components: {
-    'sb-content': Content
+    'sb-content': Content,
   },
-  mounted() {}
-}
+  mounted() {},
+};
 </script>

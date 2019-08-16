@@ -1,9 +1,24 @@
 <template>
   <div xs12>
-    <v-progress-linear v-if="loading && itemCount > 0" class="sb-progress" slot="progress" color="blue" indeterminate></v-progress-linear>
+    <v-progress-linear
+      v-if="loading && itemCount > 0"
+      slot="progress"
+      class="sb-progress"
+      color="blue"
+      indeterminate
+    />
     <v-timeline v-if="itemCount > 0">
-      <v-timeline-item v-for="(item, key) in listingContent" :key="key" color="pink" class="sb-listing" v-chat-scroll="{always: true, smooth: true}">
-        <v-card class="elevation-2" :class="setBackgroundColor(item.background)">
+      <v-timeline-item
+        v-for="(item, key) in listingContent"
+        :key="key"
+        v-chat-scroll="{ always: true, smooth: true }"
+        color="pink"
+        class="sb-listing"
+      >
+        <v-card
+          class="elevation-2"
+          :class="setBackgroundColor(item.background)"
+        >
           <v-card-title class="headline sb-wordbreak">
             {{ item.title }}
           </v-card-title>
@@ -12,10 +27,20 @@
           </v-card-text>
           <v-layout justify-center>
             <v-card-actions>
-              <v-btn dark fab color="primary" @click="clickButton('edit', key)">
+              <v-btn
+                dark
+                fab
+                color="primary"
+                @click="clickButton('edit', key)"
+              >
                 <v-icon>edit</v-icon>
               </v-btn>
-              <v-btn dark fab color="warning" @click="clickButton('delete', key)">
+              <v-btn
+                dark
+                fab
+                color="warning"
+                @click="clickButton('delete', key)"
+              >
                 <v-icon>delete</v-icon>
               </v-btn>
             </v-card-actions>
@@ -24,8 +49,18 @@
       </v-timeline-item>
     </v-timeline>
 
-    <v-layout v-else row wrap class="sb-main__container" v-cloak>
-      <v-flex xs6 offset-xs3 class="sb-column">
+    <v-layout
+      v-else
+      v-cloak
+      row
+      wrap
+      class="sb-main__container"
+    >
+      <v-flex
+        xs6
+        offset-xs3
+        class="sb-column"
+      >
         <div class="sb-about">
           <div class="hello">
             <h1>{{ i18n.hint.header }}</h1>
@@ -40,8 +75,8 @@
 </template>
 
 <script>
-import api from '@/api'
-import EventBus from '@/eventbus'
+import api from '@/api';
+import EventBus from '@/eventbus';
 
 export default {
   name: 'ListingComponent',
@@ -50,90 +85,90 @@ export default {
       i18n: this.$root.$data.Translation,
       listingContent: [],
       loading: true,
-      itemCount: 1 // set to 1 to avoid "no data available" flickering
-    }
-  },
-  created() {
-    this.getNotes()
-  },
-  mounted() {
-    const vm = this
-    const eb = EventBus
-
-    eb.$on('deleteNote', emitResults => {
-      vm.deleteNote(emitResults)
-    })
-
-    eb.$on('receiveNote', () => {
-      vm.getNotes()
-    })
+      itemCount: 1, // set to 1 to avoid "no data available" flickering
+    };
   },
   watch: {
     listingContent() {
-      this.getNotes()
-    }
+      this.getNotes();
+    },
+  },
+  created() {
+    this.getNotes();
+  },
+  mounted() {
+    const vm = this;
+    const eb = EventBus;
+
+    eb.$on('deleteNote', emitResults => {
+      vm.deleteNote(emitResults);
+    });
+
+    eb.$on('receiveNote', () => {
+      vm.getNotes();
+    });
   },
   beforeDestroy() {
-    const eb = EventBus
-    eb.$off('deleteNote')
-    eb.$off('receiveNote')
+    const eb = EventBus;
+    eb.$off('deleteNote');
+    eb.$off('receiveNote');
   },
   methods: {
     getNotes() {
-      const vm = this
+      const vm = this;
       api.getNotes().then(data => {
-        vm.listingContent = data.val()
+        vm.listingContent = data.val();
 
         if (vm.listingContent) {
-          let count = Object.keys(vm.listingContent).length
-          vm.itemCount = count
+          const count = Object.keys(vm.listingContent).length;
+          vm.itemCount = count;
         } else {
-          vm.itemCount = 0
+          vm.itemCount = 0;
         }
 
         if (data.val() || vm.itemCount === 0) {
-          vm.loading = false
+          vm.loading = false;
         }
 
         if (vm.itemCount === 0) {
           vm.$router.push({
-            name: 'notes'
-          })
-          vm.$forceUpdate()
+            name: 'notes',
+          });
+          vm.$forceUpdate();
         }
-      })
+      });
     },
     deleteNote(id) {
-      const vm = this
+      const vm = this;
       api
         .deleteNote(id)
         .then(() => {
           // show toast
-          vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'warning')
+          vm.$showToast(vm, vm.i18n.toast.toastDataDeleted, 'warning');
         })
         .catch(error => {
-          console.error(error)
+          console.error(error);
           // show toast
-          vm.$showToast(vm, vm.i18n.toast.toastDataError + ' ' + vm.processError(error), 'error')
-        })
+          vm.$showToast(vm, `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`, 'error');
+        });
     },
     setBackgroundColor(color) {
-      let ret = ''
+      let ret = '';
       if (color) {
-        ret = `sb-listing__background--${color}`
+        ret = `sb-listing__background--${color}`;
       }
-      return ret
+      return ret;
     },
     clickButton(selector, id) {
-      const eb = EventBus
+      const eb = EventBus;
       if (selector === 'edit') {
-        eb.$emit('editNote', id)
+        eb.$emit('editNote', id);
       }
 
       if (selector === 'delete') {
-        eb.$emit('showDialog', id)
+        eb.$emit('showDialog', id);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

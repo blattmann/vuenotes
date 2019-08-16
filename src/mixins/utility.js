@@ -1,17 +1,17 @@
 export default {
   decodeHtmlEntity(str) {
-    const matcher = (match, dec) => String.fromCharCode(dec)
-    const res = str.replace(/&#(\d+);/g, matcher)
+    const matcher = (match, dec) => String.fromCharCode(dec);
+    const res = str.replace(/&#(\d+);/g, matcher);
 
-    return res
+    return res;
   },
 
   encodeHtmlEntity(str) {
-    const buf = []
+    const buf = [];
     for (let i = str.length - 1; i >= 0; i -= 1) {
-      buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''))
+      buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
     }
-    return buf.join('')
+    return buf.join('');
   },
 
   /* eslint-disable */

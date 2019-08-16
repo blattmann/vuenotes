@@ -1,41 +1,41 @@
-import Vue from 'vue'
-import sbVuePlugins from '@blattmann/vue-plugins'
-import '@/plugins/vuetify'
+import Vue from 'vue';
+import sbVuePlugins from '@blattmann/vue-plugins';
+import '@/plugins/vuetify';
 // import "./registerServiceWorker";
 
 // API call
-import api from '@/api'
+import VueChatScroll from 'vue-chat-scroll';
+import api from '@/api';
 
 // Import global config
-import GlobalConfig from '@/config'
+import GlobalConfig from '@/config';
 
 // Import project settings
-import Settings from '@/config/settings'
+import Settings from '@/config/settings';
 
 // Import Regex collection
-import Regex from '@/config/regex'
+import Regex from '@/config/regex';
 
 // Import global plugims
-import Translation from '@/plugins/translation'
-import Toaster from '@/plugins/toast'
-import VueChatScroll from 'vue-chat-scroll'
+import Translation from '@/plugins/translation';
+import Toaster from '@/plugins/toast';
 
 // Import main component
-import App from '@/App'
+import App from '@/App';
 
 // Import Router
-import router from '@/router/router'
+import router from '@/router/router';
 
 // Init
-Vue.use(sbVuePlugins)
-Vue.use(GlobalConfig)
-Vue.use(Translation)
-Vue.use(Toaster)
-Vue.use(VueChatScroll)
+Vue.use(sbVuePlugins);
+Vue.use(GlobalConfig);
+Vue.use(Translation);
+Vue.use(Toaster);
+Vue.use(VueChatScroll);
 
-window.Promise = Promise
+window.Promise = Promise;
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable */
 if (document.getElementById('app')) {

@@ -1,7 +1,7 @@
-import Firebase from 'firebase'
+import Firebase from 'firebase';
 
 // Import static data (translations, etc)
-import StaticData from '@/data/i18n.json'
+import StaticData from '@/data/i18n.json';
 
 /* eslint-disable */
 

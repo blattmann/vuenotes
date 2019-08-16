@@ -2,35 +2,35 @@ export default {
   // Global configuration
   project: 'vuenotes',
   toolbar: {
-    showToggle: true // show / hide navigation drawer icon [true | false]
+    showToggle: true, // show / hide navigation drawer icon [true | false]
   },
   navigationDrawer: {
-    width: '250'
+    width: '250',
   },
   navigation: [
     {
       icon: 'home',
       title: '%home%',
       name: 'home',
-      route: '/'
+      route: '/',
     },
     {
       icon: 'info',
       title: '%about%',
       name: 'about',
-      route: '/about'
+      route: '/about',
     },
     {
       icon: 'note',
       title: '%notes%',
       name: 'notes',
-      route: '/notes'
-    }
+      route: '/notes',
+    },
   ],
   background: ['blue', 'green', 'orange', 'purple', 'pink', 'darkgrey'],
   modal: {
-    width: '500px'
+    width: '500px',
   },
   host: window.location.host.split('.')[0],
-  fileVersion: '1.0.0'
-}
+  fileVersion: '1.0.0',
+};
