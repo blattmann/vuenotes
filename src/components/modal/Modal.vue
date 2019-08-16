@@ -322,9 +322,7 @@ export default {
       if (path !== '/notes') {
         EventBus.$emit('updateNavi', true);
 
-        vm.$router.push({
-          name: 'notes',
-        });
+        vm.goToPage('notes');
         vm.$forceUpdate();
       }
     },

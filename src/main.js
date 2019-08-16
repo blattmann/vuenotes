@@ -37,6 +37,24 @@ window.Promise = Promise;
 
 Vue.config.productionTip = false;
 
+// Routing stuff
+Vue.mixin({
+  methods: {
+    goToPage(routeToGo) {
+      this.$router.push({ name: routeToGo });
+    },
+    // goToURL(url, openNewWindow) {
+    //   trackOutboundLink(url, this.$route.path);
+    //   if (openNewWindow) {
+    //     const win = window.open(url, '_blank');
+    //     win.focus();
+    //     return;
+    //   }
+    //   window.location.href = url;
+    // },
+  },
+});
+
 /* eslint-disable */
 if (document.getElementById('app')) {
   new Vue({

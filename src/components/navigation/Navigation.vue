@@ -16,9 +16,11 @@
         color="teal"
         flat
         :value="item.icon"
-        @click.native="handleClick(item.route)"
+        @click.native="goToPage(item.name)"
       >
-        <span>{{ translatePlaceholder('navigation', item.title, 'en') }}</span>
+        <span>
+          {{ translatePlaceholder('navigation', item.title, 'en') }}
+        </span>
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
     </v-bottom-nav>
@@ -37,38 +39,20 @@ export default {
     return {
       items: vm.$root.$data.Settings,
       i18n: vm.$root.$data.Translation.navigation,
-      bottomNav: vm.highlightNav(),
+      bottomNav: vm.$route.path,
     };
+  },
+  created() {
+    this.bottomNav = this.$route.path;
   },
   mounted() {
     EventBus.$on('updateNavi', () => {
       this.bottomNav = 'note';
     });
+    // console.log('this.bottomNav: ', this.bottomNav);
   },
   beforeDestroy() {
     EventBus.$off('updateNavi');
-  },
-  methods: {
-    handleClick(url) {
-      this.$router.push({ path: url });
-    },
-    highlightNav() {
-      const pathName = this.$route.path;
-      let path = '';
-
-      switch (pathName) {
-        case '/about':
-          path = 'info';
-          break;
-        case '/notes':
-          path = 'note';
-          break;
-        default:
-          path = 'home';
-      }
-
-      return path;
-    },
   },
 };
 </script>
