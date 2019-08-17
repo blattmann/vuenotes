@@ -15,6 +15,13 @@
         color="pink"
         class="sb-listing"
       >
+        <!-- <v-timeline-item
+        v-for="(item, key) in allNotes"
+        :key="key"
+        v-chat-scroll="{ always: true, smooth: true }"
+        color="pink"
+        class="sb-listing"
+      > -->
         <v-card
           class="elevation-2"
           :class="setBackgroundColor(item.background)"
@@ -77,6 +84,8 @@
 <script>
 import api from '@/api';
 import EventBus from '@/eventbus';
+// eslint-disable-next-line
+// import { mapGetters } from 'vuex';
 
 export default {
   name: 'ListingComponent',
@@ -88,14 +97,18 @@ export default {
       itemCount: 1, // set to 1 to avoid "no data available" flickering
     };
   },
-  watch: {
-    listingContent() {
-      this.getNotes();
-    },
-  },
+  // computed: mapGetters(['allNotes']),
+  // watch: {
+  //   listingContent() {
+  //     this.getNotes();
+  //   },
+  // },
   created() {
     this.getNotes();
   },
+  // created() {
+  //   this.fetchNotes();
+  // },
   mounted() {
     const vm = this;
     const eb = EventBus;
@@ -114,9 +127,12 @@ export default {
     eb.$off('receiveNote');
   },
   methods: {
+    // ...mapActions(['fetchNotes']),
     getNotes() {
       const vm = this;
       api.getNotes().then(data => {
+        // console.log('getNodes old: ', data.val());
+
         vm.listingContent = data.val();
 
         if (vm.listingContent) {

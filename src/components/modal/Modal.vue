@@ -62,6 +62,7 @@
                 <v-text-field
                   v-model="form.title"
                   :label="i18n.form.title.label"
+                  :placeholder="i18n.form.title.label"
                   :value="form.title"
                   :rules="[rules.required, rules.title.check]"
                   @change="allowCancel()"
@@ -72,6 +73,7 @@
                 <v-textarea
                   v-model="form.content"
                   :label="i18n.form.note.label"
+                  :placeholder="i18n.form.note.label"
                   :value="form.content"
                   :rules="[rules.required, rules.content.check]"
                   @change="allowCancel()"
@@ -103,16 +105,20 @@
 import api from '@/api';
 import EventBus from '@/eventbus';
 import cleanerMixin from '@/mixins/cleanerMixin';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ModalComponent',
   mixins: [cleanerMixin],
+  computed: {
+    ...mapGetters(['editNote']),
+  },
   data() {
     return {
       valid: false,
-      dialog: false,
+      dialog: this.$store.state.notes.modal,
       showReset: false,
-      modalType: 'add',
+      modalType: this.$store.state.notes.modalType,
       i18n: null,
       translation: {
         subheader: null,
@@ -140,27 +146,32 @@ export default {
   },
   mounted() {
     const vm = this;
-    const eb = EventBus;
 
-    eb.$on('addNote', emitResults => {
-      if (emitResults) {
+    vm.$store.subscribe((notes, state) => {
+      const modal = vm.$store.state.notes.modal;
+
+      if (modal) {
+        // show the modal
+        vm.dialog = true;
         vm.form = {};
         vm.modalBackground = null;
-        vm.dialog = true;
         vm.translation.subheader = vm.i18n.form.subheader.add;
+
+        if (vm.$store.state.notes.modalType === 'edit') {
+          vm.translation.subheader = vm.i18n.form.subheader.edit;
+
+          // get the current notes
+          const data = vm.$store.state.notes.noteItem;
+          vm.form.id = data.id;
+          vm.form.title = data.title;
+          vm.form.content = data.content;
+          vm.form.background = data.background;
+          vm.modalBackground = data.background;
+        }
       }
     });
 
-    eb.$on('editNote', emitResults => {
-      if (emitResults) {
-        vm.form = {};
-        vm.modalBackground = null;
-        vm.dialog = true;
-        vm.modalType = 'edit';
-        vm.translation.subheader = vm.i18n.form.subheader.edit;
-        vm.getNote(emitResults);
-      }
-    });
+    vm.resetSavedState();
   },
   beforeDestroy() {
     const eb = EventBus;
@@ -169,20 +180,12 @@ export default {
     eb.$off('deleteNote');
   },
   methods: {
-    getNote(id) {
-      const vm = this;
-      let data = null;
-      if (id) {
-        api.getNote(id).then(ref => {
-          data = ref.val();
-          vm.form.id = id;
-          vm.form.title = data.title;
-          vm.form.content = data.content;
-          vm.form.background = data.background;
-          vm.modalBackground = data.background;
-        });
-      }
-    },
+    ...mapActions(['addNotes']),
+    ...mapActions(['resetSavedState']),
+    ...mapActions(['setType']),
+    ...mapActions(['fetchNotes']),
+
+    // validate before we store the note
     passValidation(item, value) {
       const vm = this;
       const i18ne = vm.$root.$data.Translation.validation;
@@ -221,9 +224,10 @@ export default {
       }
       return ret;
     },
+    // save the note
     saveData() {
       const vm = this;
-      const eb = EventBus;
+      // const eb = EventBus;
       const { form } = vm;
 
       if (!vm.modalBackground) {
@@ -255,22 +259,29 @@ export default {
             });
         } else {
           // call api to save
-          api
-            .addNote(form)
-            .then(() => {
-              vm.$refs.modalform.reset();
-              // show toast
-              vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
+          this.addNotes(form);
+          this.setType('add');
+          this.hideModal();
+          // api
+          //   .addNote(form)
+          //   .then(() => {
+          //     vm.$refs.modalform.reset();
+          //     // show toast
+          //     vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
 
-              eb.$emit('receiveNote', true);
-              // redirect to notes listing if on different page
-              vm.redirect();
-            })
-            .catch(error => {
-              console.error(error);
-              // show toast
-              vm.$showToast(vm, `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`, 'error');
-            });
+          //     eb.$emit('receiveNote', true);
+          //     // redirect to notes listing if on different page
+          //     vm.redirect();
+          //   })
+          //   .catch(error => {
+          //     console.error(error);
+          //     // show toast
+          // vm.$showToast(
+          //   vm,
+          //   `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`,
+          //   'error'
+          // );
+          //   });
         }
       }
     },

@@ -4,7 +4,8 @@
       "navigation": {
         "home": "Home",
         "about": "About",
-        "notes": "Notes"
+        "notes": "Notes",
+        "todo": "Todo"
       },
 
       "button": {

@@ -1,4 +1,6 @@
 import Vue from 'vue';
+// eslint-disable-next-line
+// import { mapState, m apGetters } from 'vuex';
 import sbVuePlugins from '@blattmann/vue-plugins';
 import '@/plugins/vuetify';
 // import "./registerServiceWorker";
@@ -25,6 +27,9 @@ import App from '@/App';
 
 // Import Router
 import router from '@/router/router';
+
+// Import Vuex store
+import store from '@/store';
 
 // Init
 Vue.use(sbVuePlugins);
@@ -61,12 +66,12 @@ if (document.getElementById('app')) {
     el: '#app',
     render: h => h(App),
     router,
+    store,
     data() {
       return {
         Translation,
         Settings,
         Regex,
-        router,
         path: '/',
         host: window.location.host.split('.')[0]
       }

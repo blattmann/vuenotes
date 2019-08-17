@@ -68,6 +68,29 @@ export default [
       requiresAuth: false,
     },
   },
+  {
+    path: '/todo',
+    name: 'todo',
+    component: () => import(/* webpackChunkName: "todo" */ '@/pages/todo/Todo.vue'),
+    meta: {
+      title: 'Todo',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Todo listing',
+        },
+        {
+          property: 'og:description',
+          content: 'Todo listing',
+        },
+        {
+          name: 'keywords',
+          content: 'vuenotes, vue, vue.js, stefan blattmann',
+        },
+      ],
+      requiresAuth: false,
+    },
+  },
   // All invalid routes will redirect here
   {
     path: '*',

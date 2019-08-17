@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import EventBus from '@/eventbus';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'AddButtonComponent',
@@ -26,10 +26,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['showModal']),
     addItem() {
-      // console.log('addItem')
-      const eb = EventBus;
-      eb.$emit('addNote', true);
+      this.showModal();
     },
   },
 };

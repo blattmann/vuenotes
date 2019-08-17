@@ -1,0 +1,78 @@
+.sb-listing {
+  padding: sp(10);
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: sp(100);
+  }
+
+  &__background {
+    &--blue {
+      background-color: $color-card-background--blue !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--blue !important;
+      }
+    }
+
+    &--green {
+      background-color: $color-card-background--green !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--green !important;
+      }
+    }
+
+    &--darkgrey {
+      background-color: $color-card-background--darkgrey !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--darkgrey !important;
+      }
+    }
+
+    &--orange {
+      background-color: $color-card-background--orange !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--orange !important;
+      }
+    }
+
+    &--purple {
+      background-color: $color-card-background--purple !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--purple !important;
+      }
+    }
+
+    &--pink {
+      background-color: $color-card-background--pink !important;
+
+      &:before,
+      &:after {
+        border-right: 10px solid $color-card-background--pink !important;
+      }
+    }
+  }
+}
+
+.sb-progress {
+  height: sp(2) !important;
+  margin: auto 0 !important;
+}
+
+// HEADS UP: overwrite the default styles of vuetify
+
+.v-timeline {
+  position: initial;
+}

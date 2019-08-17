@@ -26,6 +26,12 @@ export default {
       name: 'notes',
       route: '/notes',
     },
+    {
+      icon: 'clipboard',
+      title: '%todo%',
+      name: 'todo',
+      route: '/todo',
+    },
   ],
   background: ['blue', 'green', 'orange', 'purple', 'pink', 'darkgrey'],
   modal: {

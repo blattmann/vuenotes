@@ -19,42 +19,44 @@ export default {
   // Ref: https://firebase.google.com/docs/database/web/read-and-write
 
   getNotes() {
-    const db = Firebase.database()
-    const path = 'opensource/notebook'
-    return db.ref(path).once('value')
+    const db = Firebase.database();
+    const path = 'opensource/notebook';
+    const result = db.ref(path).once('value');
+    // const result = db.ref(path).orderByKey().once('value');
+    return result;
   },
 
   getNote(id) {
-    const db = Firebase.database()
-    const path = `opensource/notebook/${id}`
-    return db.ref(path).once('value')
+    const db = Firebase.database();
+    const path = `opensource/notebook/${id}`;
+    return db.ref(path).once('value');
   },
 
   addNote(payload) {
-    const db = Firebase.database()
-    const path = `opensource/notebook`
-    return db.ref(path).push(payload)
+    const db = Firebase.database();
+    const path = `opensource/notebook`;
+    return db.ref(path).push(payload);
   },
 
   editNote(id, payload) {
-    const db = Firebase.database()
-    const path = `opensource/notebook/${id}`
-    return db.ref(path).set(payload)
+    const db = Firebase.database();
+    const path = `opensource/notebook/${id}`;
+    return db.ref(path).set(payload);
   },
 
   deleteNote(id) {
-    const db = Firebase.database()
-    const path = `opensource/notebook/${id}`
-    return db.ref(path).remove()
+    const db = Firebase.database();
+    const path = `opensource/notebook/${id}`;
+    return db.ref(path).remove();
   },
 
   // Get language paramaters
   getLanguePack(lang) {
-    const trans = StaticData
+    const trans = StaticData;
     /* eslint-disable */
     if (lang === '') {
-      lang = 'en'
+      lang = 'en';
     }
-    return trans.translations[lang]
+    return trans.translations[lang];
   }
 }
