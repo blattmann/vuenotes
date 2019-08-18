@@ -9,12 +9,12 @@
       <v-toolbar
         dark
         color="primary"
-      >
+       >
         <v-btn
           icon
           dark
           @click.native="dialog = false"
-        >
+         >
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title>{{ i18n.form.header }}</v-toolbar-title>
@@ -24,7 +24,7 @@
             v-if="showReset"
             dark
             flat
-            @click.native="reset()"
+            @click.native="resetForm()"
           >
             {{ i18n.button.reset }}
           </v-btn>
@@ -59,6 +59,7 @@
               lazy-validation
             >
               <v-flex class="mb-3">
+                <div> {{ form.id }} </div>
                 <v-text-field
                   v-model="form.title"
                   :label="i18n.form.title.label"
@@ -110,20 +111,18 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'ModalComponent',
   mixins: [cleanerMixin],
-  computed: {
-    ...mapGetters(['editNote']),
-  },
   data() {
     return {
       valid: false,
       dialog: this.$store.state.notes.modal,
       showReset: false,
-      modalType: this.$store.state.notes.modalType,
+      modalType: 'add',
       i18n: null,
       translation: {
         subheader: null,
       },
       form: {},
+      editNoteData: {},
       modalBackground: null,
       background: [],
       rules: {
@@ -146,29 +145,68 @@ export default {
   },
   mounted() {
     const vm = this;
+    const store = vm.$store;
 
-    vm.$store.subscribe((notes, state) => {
-      const modal = vm.$store.state.notes.modal;
+    store.subscribe((notes, state) => {
+      const modal = store.state.notes.modal;
+      const formSaved = store.state.notes.saved;
+      const formError = store.state.notes.formError;
 
       if (modal) {
-        // show the modal
-        vm.dialog = true;
+        // remove previous values
         vm.form = {};
         vm.modalBackground = null;
         vm.translation.subheader = vm.i18n.form.subheader.add;
+        vm.modalType = 'add';
 
-        if (vm.$store.state.notes.modalType === 'edit') {
+        if (store.state.notes.modalType === 'edit') {
+          // this.$store.commit('setSaved', false);
+
           vm.translation.subheader = vm.i18n.form.subheader.edit;
+          vm.modalType = 'edit';
 
           // get the current notes
-          const data = vm.$store.state.notes.noteItem;
-          vm.form.id = data.id;
-          vm.form.title = data.title;
-          vm.form.content = data.content;
-          vm.form.background = data.background;
-          vm.modalBackground = data.background;
+          const noteItem = store.state.notes.noteItem;
+          if (noteItem) {
+            vm.form.id = noteItem.id;
+            vm.form.title = noteItem.title;
+            vm.form.content = noteItem.content;
+            vm.form.background = noteItem.background;
+            vm.modalBackground = noteItem.background;
+
+            vm.editNoteData = vm.form;
+          }
         }
-      }
+
+        console.log('modalType: ', vm.modalType);
+
+        // show the modal
+        vm.dialog = true;
+      };
+
+      if (formSaved) {
+        vm.$refs.modalform.reset();
+
+        // hide the modal
+        vm.dialog = false;
+        // show toast
+        vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
+
+        // this.$store.commit('setModalType', 'add');
+
+        // this.$store.commit('setSaved', false);
+        // this.$store.commit('setModal', false);
+      };
+
+      if (formError) {
+        console.error(error);
+        // show toast
+        vm.$showToast(
+          vm,
+          `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`,
+          'error'
+        );
+      };
     });
 
     vm.resetSavedState();
@@ -184,6 +222,8 @@ export default {
     ...mapActions(['resetSavedState']),
     ...mapActions(['setType']),
     ...mapActions(['fetchNotes']),
+    ...mapActions(['hideModal']),
+    ...mapActions(['editNote']),
 
     // validate before we store the note
     passValidation(item, value) {
@@ -227,7 +267,6 @@ export default {
     // save the note
     saveData() {
       const vm = this;
-      // const eb = EventBus;
       const { form } = vm;
 
       if (!vm.modalBackground) {
@@ -238,50 +277,14 @@ export default {
 
       if (vm.$refs.modalform.validate()) {
         if (vm.modalType === 'edit') {
-          const { id } = form;
-          // remove id from form object
-          delete form.id;
-
+          console.log('update note');
           // call api to save
-          api
-            .editNote(id, form)
-            .then(() => {
-              vm.$refs.modalform.reset();
-              // show toast
-              vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
-              // redirect to notes listing if on different page
-              vm.redirect();
-            })
-            .catch(error => {
-              console.error(error);
-              // show toast
-              vm.$showToast(vm, `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`, 'error');
-            });
+          vm.editNote(form);
         } else {
+          console.log('add new note');
           // call api to save
-          this.addNotes(form);
-          this.setType('add');
-          this.hideModal();
-          // api
-          //   .addNote(form)
-          //   .then(() => {
-          //     vm.$refs.modalform.reset();
-          //     // show toast
-          //     vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
-
-          //     eb.$emit('receiveNote', true);
-          //     // redirect to notes listing if on different page
-          //     vm.redirect();
-          //   })
-          //   .catch(error => {
-          //     console.error(error);
-          //     // show toast
-          // vm.$showToast(
-          //   vm,
-          //   `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`,
-          //   'error'
-          // );
-          //   });
+          vm.addNotes(form);
+          vm.setType('add');
         }
       }
     },
@@ -313,13 +316,14 @@ export default {
         vm.error = true;
       }
     },
-    reset() {
+    resetForm() {
       const vm = this;
       vm.showReset = false;
       vm.valid = false;
 
       if (vm.form.id) {
-        vm.getNote(vm.form.id);
+        console.log('vm.editNoteData: ', vm.editNoteData);
+        vm.form = vm.editNoteData;
       } else {
         vm.$refs.modalform.reset();
       }

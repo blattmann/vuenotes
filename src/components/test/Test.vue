@@ -8,7 +8,7 @@
       indeterminate
     />
 
-    <v-timeline v-if="allNotes">
+    <!-- <v-timeline v-if="allNotes">
       <v-timeline-item
         v-for="(item, key) in allNotes"
         :key="key"
@@ -48,7 +48,11 @@
           </v-layout>
         </v-card>
       </v-timeline-item>
-    </v-timeline>
+    </v-timeline> -->
+
+    <pre>
+      {{ listingContent.notes }}
+    </pre>
   </div>
 </template>
 
@@ -60,14 +64,11 @@ export default {
   computed: {
     ...mapGetters(['allNotes']),
     ...mapGetters(['showLoading']),
-    // allNotes() {
-    //   this.fetchNotes();
-    // },
   },
   data() {
     return {
       i18n: this.$root.$data.Translation,
-      listingContent: [],
+      listingContent: this.$store.state.notes,
       loading: true,
       itemCount: 1, // set to 1 to avoid "no data available" flickering
     };
@@ -75,20 +76,21 @@ export default {
   created() {
     this.fetchNotes();
   },
-  mounted() {
-    this.$store.subscribe((notes, state) => {
-      const savedItem = this.$store.state.notes.saved;
-      console.log('savedItem: ', savedItem);
+  // mounted() {
+  //   this.$store.subscribe((notes, state) => {
+  //     const savedItem = this.$store.state.notes.saved;
+  //     console.log('savedItem: ', savedItem);
 
-      if(savedItem) {
-        // show the added item in the list
-      }
-    });
-  },
+  //     if(savedItem) {
+  //       // show the added item in the list
+  //     }
+  //   });
+  // },
   methods: {
     ...mapActions(['fetchNotes']),
     ...mapActions(['showModal']),
     ...mapActions(['setType']),
+
     setBackgroundColor(color) {
       let ret = '';
       if (color) {
@@ -97,15 +99,16 @@ export default {
       return ret;
     },
     clickButton(selector, id) {
+      const vm = this;
+      vm.$store.commit('setSaved', false);
+
       if (selector === 'edit') {
-        const vm = this;
         vm.setType({ selector, id });
         vm.showModal();
       }
 
       if (selector === 'delete') {
         console.log('delete: ', id);
-        const vm = this;
       }
     },
     deleteNote(id) {

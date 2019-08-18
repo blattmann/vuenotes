@@ -2,12 +2,13 @@ import api from '@/api';
 
 /* eslint no-shadow: ["error", { "allow": ["state"] }] */
 const state = {
-  notes: [],
+  notes: {},
   loading: true,
   saved: false,
   modal: false,
   modalType: 'add',
   noteItem: null,
+  formError: false,
 };
 
 const getters = {
@@ -15,6 +16,9 @@ const getters = {
   showLoading: state => state.loading,
   editNote: state => state.noteItem,
 };
+
+// Hint:
+// commit is for mutations, while dispatch is for actions
 
 const actions = {
   resetSavedState({ commit }) {
@@ -25,13 +29,11 @@ const actions = {
     commit('setModal', true);
   },
 
-  hideModal({ commit }) {
-    commit('setModal', false);
-  },
-
   setType({ commit, dispatch }, params) {
     commit('setModalType', params.selector);
-    dispatch('fetchNote', params.id);
+    if (params.id) {
+      dispatch('fetchNote', params.id);
+    }
   },
 
   fetchNotes({ commit }) {
@@ -44,8 +46,9 @@ const actions = {
     });
   },
 
-  fetchNote({ commit }, id) {
-    // console.log('fetchNote: ', id);
+  fetchNote({ commit }, params) {
+    const { id } = params;
+    console.log('fetchNote: ', id);
     api.getNote(id).then(data => {
       // console.log('fetchNote: ', data.val());
       const item = data.val();
@@ -54,38 +57,51 @@ const actions = {
     });
   },
 
+  editNote({ commit, dispatch }, params) {
+    commit('setError', false);
+
+    const { id } = params;
+    // remove id from params object
+    delete params.id;
+    const payload = params;
+
+    api
+      .editNote(id, payload).then(() => {
+        commit('setSaved', true);
+        // dispatch('fetchNotes');
+      })
+      .catch(error => {
+        console.error(error);
+        commit('setError', true);
+      });
+  },
+
   addNotes({ commit }, form) {
+    commit('setError', false);
     api
       .addNote(form).then(() => {
         console.log('note added: ', form);
-        // vm.$refs.modalform.reset();
-        // // show toast
-        // vm.$showToast(vm, vm.i18n.toast.toastDataSaved, 'success');
-
-        // eb.$emit('receiveNote', true);
-        // // redirect to notes listing if on different page
-        // vm.redirect();
         commit('newNote', form);
         commit('setSaved', true);
       })
       .catch(error => {
         console.error(error);
-        // show toast
-        // vm.$showToast(vm, `${vm.i18n.toast.toastDataError} ${vm.processError(error)}`, 'error');
+        commit('setError', true);
       });
   },
 };
 
 const mutations = {
   setNotes: (state, notes) => (state.notes = notes),
-  // setNotes: (state, notes) => state.notes.push(notes),
-  setLoading: (state, loading) => (state.loading = loading),
   newNote: (state, note) => state.notes.note,
-  // newNote: (state, note) => state.notes.push(note),
+  setNoteItem: (state, noteItem) => (state.noteItem = noteItem),
+
+  setLoading: (state, loading) => (state.loading = loading),
   setSaved: (state, saved) => (state.saved = saved),
+  setError: (state, formError) => (state.formError = formError),
+
   setModal: (state, modal) => (state.modal = modal),
   setModalType: (state, modalType) => (state.modalType = modalType),
-  setNoteItem: (state, noteItem) => (state.noteItem = noteItem),
 };
 
 export default {
@@ -94,10 +110,3 @@ export default {
   actions,
   mutations,
 };
-
-// const fbNotes = () => {
-//   api.getNotes().then(data => {
-//     console.log('getNodes new: ', data.val());
-//     return data.val();
-//   });
-// };
